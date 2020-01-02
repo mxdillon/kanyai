@@ -10,6 +10,6 @@ def test_health(client):
 
 @pytest.mark.usefixtures('client')
 def test_index(client):
-    """ Check the index page loads """
+    """Check the index page loads."""
     response = client.get('/')
     assert response.status_code == 200
