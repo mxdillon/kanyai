@@ -1,6 +1,18 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, jsonify
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
+
+
+def create_app():
+    """ Create the Flask application"""
+    return app
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return jsonify({"Status": 'OK'})
 
 
 @app.route("/", methods=["GET", "POST"])
@@ -23,4 +35,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.run(port=5001)
+    app.run()
