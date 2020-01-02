@@ -101,7 +101,7 @@ class GenerateLyrics:
         generated_str = []
 
         model.reset_states()
-        for i in range(num_characters):
+        for _ in range(num_characters):
             predictions = model(input_eval)
             predictions = tf.squeeze(predictions, 0) / temperature
             predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
@@ -111,3 +111,27 @@ class GenerateLyrics:
             generated_str.append(self.ind_to_char_map[predicted_id])
 
         return (start_string + ''.join(generated_str))
+
+
+def call_generator(start_phrase: str, weights_path: str, string_length: int) -> str:
+    """Instantiate the generator class with a saved model and generate a lyrics string.
+
+    :param start_phrase: user defined string to start the lyrics
+    :param weights_path: path to the model file containing the weights
+    :param string_length: length of string to be generated
+    :return: string of generated lyrics appended to the start phrase
+    """
+
+    generator = GenerateLyrics(embedding_dim=256)
+    generator.load_character_maps(
+        character_map_load_path='./model/_character_maps/character_index_map.json',
+        index_map_load_path='./model/_character_maps/index_character_map.npy')
+
+    prediction_model = generator.rebuild_model(batch_size=1,
+                                               weights_path=weights_path)
+    generated_text = generator.generate_text(model=prediction_model,
+                                             start_string=start_phrase,
+                                             num_characters=string_length,
+                                             temperature=0.93)
+
+    return generated_text
