@@ -1,8 +1,19 @@
-from flask import Flask, request, render_template, jsonify
+from flask import Flask
 from flask_cors import CORS
+from src.server import health_route, index_route
 
 app = Flask(__name__)
 CORS(app)
+
+
+@app.route('/health', methods=['GET'])
+def health():
+    return health_route()
+
+
+@app.route("/", methods=["GET", "POST"])
+def index():
+    return index_route()
 
 
 def create_app():
@@ -10,29 +21,6 @@ def create_app():
     return app
 
 
-@app.route('/health', methods=['GET'])
-def health():
-    return jsonify({"Status": 'OK'})
-
-
-@app.route("/", methods=["GET", "POST"])
-def index():
-    if request.method == 'GET':
-
-        text_input = request.args.get('text_input')
-        if text_input is None:
-            text_input = ""
-
-        if len(text_input) > 0:
-            result = ' '.join([text_input for t in range(100)])
-        else:
-            result = ""
-
-        return render_template(r'index.html', text_input=text_input,
-                               result=result)
-
-    return render_template('/index.html')
-
-
 if __name__ == "__main__":
+    app = create_app()
     app.run()
