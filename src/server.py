@@ -1,3 +1,12 @@
+#!/usr/bin/python
+# coding=utf-8
+""" Flask server
+:usage:
+    Routes for KanyAI server - healthc heck and index.
+:authors
+    JP/CW at 02/01/20
+"""
+
 from flask import request, render_template, jsonify
 
 

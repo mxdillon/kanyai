@@ -1,3 +1,12 @@
+#!/usr/bin/python
+# coding=utf-8
+""" KanyAI application
+:usage:
+    Flask application.
+:authors
+    JP/CW at 02/01/20
+"""
+
 from flask import Flask
 from flask_cors import CORS
 from src.server import health_route, index_route
@@ -17,7 +26,7 @@ def index():
 
 
 def create_app():
-    """ Create the Flask application"""
+    """Create the Flask application."""
     return app
 
 
