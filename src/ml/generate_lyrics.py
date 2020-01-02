@@ -10,6 +10,7 @@
 import json
 import numpy as np
 import tensorflow as tf
+from better_profanity import profanity
 
 
 class GenerateLyrics:
@@ -136,3 +137,12 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
                                              temperature=0.9)
 
     return generated_text
+
+
+def sanitise_string(text_in: str) -> str:
+    """Clean an input string of all swear words. Replace them with '****'.
+
+    :param text_in: string containing text to be sanitised
+    :return: string of sanitised text
+    """
+    return profanity.censor(text=text_in)
