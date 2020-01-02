@@ -18,7 +18,9 @@ jobs:
         python -m pip install --upgrade pip
         pip install tox
         pip install -r requirements.txt
-    - name: Test with tox
-      run: tox
-    - name: Run flake8
+    - name: flake8 style enforcement
       run: flake8
+    - name: bandit security linting
+      run: bandit app.py
+    - name: unit tests
+      run: python3 -m pytest --cov=src --cov-fail-under=80
