@@ -8,7 +8,7 @@
 """
 
 from flask import request, render_template, jsonify
-from src.ml.generate_lyrics import call_generator
+from src.ml.generate_lyrics import call_generator, sanitise_string
 
 
 def health_route():
@@ -26,6 +26,8 @@ def index_route():
                                         weights_path='./model/1_2la512-256emb512lr003/ckpt_50',
                                         string_length=500)
 
-        return render_template('index.html', text_input=text_input, result=generated_text)
+        clean_text = sanitise_string(text_in=generated_text)
+
+        return render_template('index.html', text_input=text_input, result=clean_text)
 
     return render_template('index.html')
