@@ -3,7 +3,7 @@ import pytest
 
 @pytest.mark.usefixtures('client')
 def test_health(client):
-    """ Check the health of the service """
+    """Check the health of the service."""
     response = client.get('health')
     assert response.json == {"Status": 'OK'}
 
