@@ -10,6 +10,7 @@
 from flask import Flask
 from flask_cors import CORS
 from src.server import health_route, index_route
+from better_profanity import profanity
 
 app = Flask(__name__)
 CORS(app)
@@ -33,3 +34,4 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     app.run()
+    profanity.load_censor_words()

@@ -10,6 +10,7 @@
 import json
 import numpy as np
 import tensorflow as tf
+from better_profanity import profanity
 
 
 class GenerateLyrics:
@@ -17,7 +18,8 @@ class GenerateLyrics:
 
     def __init__(self, embedding_dim: int):
         """
-        :param embedding_dim: size of vector representation for each character
+        :param embedding_dim: size of vector representation for each character. This MUST match the embedding dimension
+        of the saved model that is loaded during generation
         """
 
         self.embedding_dim = embedding_dim
@@ -122,7 +124,7 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
     :return: string of generated lyrics appended to the start phrase
     """
 
-    generator = GenerateLyrics(embedding_dim=256)
+    generator = GenerateLyrics(embedding_dim=512)
     generator.load_character_maps(
         character_map_load_path='./model/_character_maps/character_index_map.json',
         index_map_load_path='./model/_character_maps/index_character_map.npy')
@@ -132,6 +134,15 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
     generated_text = generator.generate_text(model=prediction_model,
                                              start_string=start_phrase,
                                              num_characters=string_length,
-                                             temperature=0.93)
+                                             temperature=0.9)
 
     return generated_text
+
+
+def sanitise_string(text_in: str) -> str:
+    """Clean an input string of all swear words. Replace them with '****'.
+
+    :param text_in: string containing text to be sanitised
+    :return: string of sanitised text
+    """
+    return profanity.censor(text=text_in)
