@@ -23,7 +23,7 @@ def get_text(text_input: str) -> str:
 
         gen_text = call_generator(start_phrase=text_input,
                                   weights_path='./model/2_noheaders/ckpt_60',
-                                  string_length=700)
+                                  string_length=500)
         gen_text = sanitise_string(text_in=gen_text)
         gen_text = remove_start_phrase(text_in=gen_text, start_phrase=text_input)
         gen_text = capitalise_first_character(text_in=gen_text)
