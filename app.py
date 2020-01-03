@@ -29,7 +29,7 @@ def index():
     """Index route for lyric entry and generation.
 
     POST requests are from submissions.
-    GET are the initial rendering of the page.
+    GET are the initial rendering of the page (no text input or result).
     """
 
     if request.method == 'POST':

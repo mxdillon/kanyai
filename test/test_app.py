@@ -1,3 +1,11 @@
+#!/usr/bin/python
+# coding=utf-8
+""" Tests for KanyAI application
+:usage:
+    Run with every commit.
+:authors
+    JP at 02/01/20
+"""
 import pytest
 
 
