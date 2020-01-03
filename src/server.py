@@ -6,28 +6,20 @@
 :authors
     JP/CW at 02/01/20
 """
-
-from flask import request, render_template, jsonify
 from src.ml.generate_lyrics import call_generator, sanitise_string
 
 
-def health_route():
-    return jsonify({"Status": 'OK'})
+def get_text(text_input: str) -> str:
+    """Generate the lyrics for the text input from the model.
 
-
-def index_route():
-    if request.method == 'GET':
-
-        text_input = request.args.get('text_input')
-        if text_input is None:
-            text_input = ' '
-
+    :param text_input: starting lyric from the input form
+    :return: sanitised lyrics for rendering (str)
+    """
+    if text_input is None:
+        return ' '
+    else:
         generated_text = call_generator(start_phrase=text_input,
                                         weights_path='./model/1_2la512-256emb512lr003/ckpt_50',
                                         string_length=500)
 
-        clean_text = sanitise_string(text_in=generated_text)
-
-        return render_template('index.html', text_input=text_input, result=clean_text)
-
-    return render_template('index.html')
+        return sanitise_string(text_in=generated_text)
