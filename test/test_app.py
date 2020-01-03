@@ -9,8 +9,8 @@
 import pytest
 
 
-@pytest.mark.usefixtures('client')
-def test_health(client):
+@pytest.mark.usefixtures('env_setup', 'client')
+def test_health(env_setup, client):
     """Check the health of the service."""
     response = client.get('health')
     assert response.json == {"Status": 'OK'}
