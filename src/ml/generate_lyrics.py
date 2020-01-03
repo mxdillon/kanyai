@@ -126,8 +126,8 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
 
     generator = GenerateLyrics(embedding_dim=512)
     generator.load_character_maps(
-        character_map_load_path='./model/_character_maps/character_index_map.json',
-        index_map_load_path='./model/_character_maps/index_character_map.npy')
+        character_map_load_path='./model/2_noheaders/character_index_map.json',
+        index_map_load_path='./model/2_noheaders/index_character_map.npy')
 
     prediction_model = generator.rebuild_model(batch_size=1,
                                                weights_path=weights_path)
