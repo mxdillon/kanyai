@@ -146,3 +146,26 @@ def sanitise_string(text_in: str) -> str:
     :return: string of sanitised text
     """
     return profanity.censor(text=text_in)
+
+
+def remove_start_phrase(text_in: str, start_phrase: str) -> str:
+    """Remove start string from returned result
+
+    :param text_in: string with substring to be removed from the start
+    :param start_phrase: substring to remove from the start
+    :return: string to be returned to user
+    """
+    return text_in[len(start_phrase):]
+
+
+def capitalise_first_character(text_in: str) -> str:
+    """Capitalise the first character in the generated lyrics. If first character is a space, remove it and capitalise.
+
+    :param text_in: string of generated lyrics
+    :return: string with capital at the start
+    """
+    if text_in[0] == ' ':
+        text_rtn = text_in[1:]
+    else:
+        text_rtn = text_in
+    return text_rtn[0].upper() + text_rtn[1:]
