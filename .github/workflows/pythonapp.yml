@@ -19,7 +19,7 @@ jobs:
         pip install tox
         pip install -r requirements.txt
     - name: flake8 style enforcement
-      run: flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160
+      run: flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160 src/ app.py test/
     - name: bandit security linting
       run: bandit app.py
     - name: unit tests
