@@ -18,8 +18,10 @@ def get_text(text_input: str) -> str:
     if text_input is None:
         return ' '
     else:
-        generated_text = call_generator(start_phrase=text_input,
+        gen_text = call_generator(start_phrase=text_input,
                                         weights_path='./model/1_2la512-256emb512lr003/ckpt_50',
                                         string_length=500)
 
-        return sanitise_string(text_in=generated_text)
+        gen_text = sanitise_string(text_in=gen_text)
+
+        return gen_text.replace('\n', '<br>')

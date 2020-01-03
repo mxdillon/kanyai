@@ -16,7 +16,9 @@
             {% if result != "" %}
 	            <div class="text">
 	            	{{ text_input }} <br>
+                    {% autoescape false %}
 					{{ result }}
+                    {% endautoescape %}
 	        	</div>
 	        {% endif %}
         </div>
