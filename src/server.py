@@ -22,8 +22,8 @@ def get_text(text_input: str) -> str:
         logging.info(f'Generating lyrics for {text_input}')
 
         gen_text = call_generator(start_phrase=text_input,
-                                  weights_path='./model/1_2la512-256emb512lr003/ckpt_50',
-                                  string_length=500)
+                                  weights_path='./model/2_noheaders/ckpt_60',
+                                  string_length=700)
         gen_text = sanitise_string(text_in=gen_text)
         gen_text = remove_start_phrase(text_in=gen_text, start_phrase=text_input)
         gen_text = capitalise_first_character(text_in=gen_text)
