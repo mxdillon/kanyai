@@ -28,6 +28,7 @@ jobs:
           APPLICATION_CREDENTIALS: ${{ secrets.APPLICATION_CREDENTIALS }}
         run: |
           echo $APPLICATION_CREDENTIALS > ~/service_account_credentials.json
+          export GOOGLE_APPLICATION_CREDENTIALS=~/service_account_credentials.json
           pip install pytest
           python -m pytest test/
       - name: Run deployment
