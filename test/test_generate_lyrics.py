@@ -17,9 +17,9 @@ def test_remove_start_phrase(text_in, start_phrase, expected):
     assert remove_start_phrase(text_in=text_in, start_phrase=start_phrase) == expected
 
 
-@pytest.mark.parametrize("text_in,expected", [('hello world', 'Hello world'),
+@pytest.mark.parametrize("text_in,expected", [('hello World', 'Hello World'),
                                               ('Hello world', 'Hello world'),
-                                              (' what up', 'What up'),
-                                              (' What up', 'What up')])
-def test_remove_start_phrase(text_in, expected):
+                                              (' what Up', 'What Up'),
+                                              (' What Up', 'What Up')])
+def test_capitalise_first_character(text_in, expected):
     assert capitalise_first_character(text_in=text_in) == expected

@@ -165,7 +165,7 @@ def capitalise_first_character(text_in: str) -> str:
     :return: string with capital at the start
     """
     if text_in[0] == ' ':
-        text_rtn = text_in[1:].capitalize()
+        text_rtn = text_in[1:]
     else:
-        text_rtn = text_in.capitalize()
-    return text_rtn
+        text_rtn = text_in
+    return text_rtn[0].upper() + text_rtn[1:]
