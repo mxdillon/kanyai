@@ -11,11 +11,16 @@ from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from src.server import get_text
 from better_profanity import profanity
+import google.cloud.logging
 import logging
+
+# Create client for StackDriver logging
+client = google.cloud.logging.Client()
+client.setup_logging()
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 CORS(app)
-logging.basicConfig(level=logging.INFO)
 
 
 @app.route('/health', methods=['GET'])
