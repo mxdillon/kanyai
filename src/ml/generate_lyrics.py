@@ -169,3 +169,15 @@ def capitalise_first_character(text_in: str) -> str:
     else:
         text_rtn = text_in
     return text_rtn[0].upper() + text_rtn[1:]
+
+
+def ensure_space(text_in: str) -> str:
+    """Ensure there is a space at the end of the user input so that lyric generation starts by generating a new word.
+
+    :param text_in: text input from user
+    :return: text input from user, ensuring there is a space at the end
+    """
+    if text_in[-1] == ' ':
+        return text_in
+    else:
+        return text_in + ' '

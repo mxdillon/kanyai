@@ -6,7 +6,8 @@
 :authors
     JP/CW at 02/01/20
 """
-from src.ml.generate_lyrics import call_generator, sanitise_string, remove_start_phrase, capitalise_first_character
+from src.ml.generate_lyrics import call_generator, sanitise_string, remove_start_phrase, capitalise_first_character, \
+    ensure_space
 import logging
 
 
@@ -21,11 +22,12 @@ def get_text(text_input: str) -> str:
     else:
         logging.info(f'Generating lyrics for {text_input}')
 
-        gen_text = call_generator(start_phrase=text_input,
+        start_phrase = ensure_space(text_input)
+        gen_text = call_generator(start_phrase=start_phrase,
                                   weights_path='./model/2_noheaders/ckpt_60',
                                   string_length=500)
         gen_text = sanitise_string(text_in=gen_text)
-        gen_text = remove_start_phrase(text_in=gen_text, start_phrase=text_input)
+        gen_text = remove_start_phrase(text_in=gen_text, start_phrase=start_phrase)
         gen_text = capitalise_first_character(text_in=gen_text)
         gen_text = gen_text.replace('\n', '<br>')
 
