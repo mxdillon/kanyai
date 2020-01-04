@@ -7,7 +7,7 @@
     MD at 03/01/20
 """
 import pytest
-from src.ml.generate_lyrics import remove_start_phrase, capitalise_first_character
+from src.ml.generate_lyrics import remove_start_phrase, capitalise_first_character, ensure_space
 
 
 @pytest.mark.parametrize("text_in,start_phrase,expected", [('hello world', 'hello', ' world'),
@@ -23,3 +23,9 @@ def test_remove_start_phrase(text_in, start_phrase, expected):
                                               (' What Up', 'What Up')])
 def test_capitalise_first_character(text_in, expected):
     assert capitalise_first_character(text_in=text_in) == expected
+
+
+@pytest.mark.parametrize("text_in,expected", [('hello World', 'hello World '),
+                                              (' What Up ', ' What Up ')])
+def test_ensure_space(text_in, expected):
+    assert ensure_space(text_in=text_in) == expected
