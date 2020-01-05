@@ -21,3 +21,10 @@ def test_index(client):
     """Check the index page loads."""
     response = client.get('/')
     assert response.status_code == 200
+
+
+@pytest.mark.usefixtures('client')
+def test_post(client):
+    """Check the post request for generating lyrics."""
+    response = client.post('/')
+    assert response.status_code == 200
