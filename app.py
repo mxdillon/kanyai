@@ -11,6 +11,7 @@ from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from src.server import get_text
 from better_profanity import profanity
+from src.config.profanity import custom_badwords
 import google.cloud.logging
 import logging
 
@@ -58,4 +59,4 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     app.run()
-    profanity.load_censor_words()
+    profanity.add_censor_words(custom_badwords)
