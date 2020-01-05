@@ -10,6 +10,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from src.server import get_text
+from src.config.log_setup import log_config
 from better_profanity import profanity
 import google.cloud.logging
 import logging
@@ -21,6 +22,10 @@ logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 CORS(app)
+
+# Configure logger
+log_config()
+logging.info('starting application')
 
 
 @app.route('/health', methods=['GET'])
