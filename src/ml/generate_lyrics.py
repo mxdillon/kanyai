@@ -11,6 +11,7 @@ import json
 import numpy as np
 import tensorflow as tf
 from better_profanity import profanity
+import logging
 
 
 class GenerateLyrics:
@@ -124,13 +125,18 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
     :return: string of generated lyrics appended to the start phrase
     """
 
+    logging.debug(f'leading GenerateLyrics')
     generator = GenerateLyrics(embedding_dim=512)
+
+    logging.debug('loading character maps')
     generator.load_character_maps(
         character_map_load_path='./model/2_noheaders/character_index_map.json',
         index_map_load_path='./model/2_noheaders/index_character_map.npy')
 
+    logging.debug('rebuilding model')
     prediction_model = generator.rebuild_model(batch_size=1,
                                                weights_path=weights_path)
+    logging.debug('generating text')
     generated_text = generator.generate_text(model=prediction_model,
                                              start_string=start_phrase,
                                              num_characters=string_length,
