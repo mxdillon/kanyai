@@ -9,10 +9,15 @@
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from better_profanity import profanity
-import logging
 from src.server import get_text
-from src.log_setup import log_config
+from better_profanity import profanity
+import google.cloud.logging
+import logging
+
+# Create client for StackDriver logging
+client = google.cloud.logging.Client()
+client.setup_logging()
+logging.basicConfig(level=logging.INFO)
 
 app = Flask(__name__)
 CORS(app)
@@ -21,7 +26,6 @@ CORS(app)
 @app.route('/health', methods=['GET'])
 def health():
     """Healthcheck endpoint for application monitoring."""
-    logging.debug('healthcheck')
     return jsonify({"Status": 'OK'})
 
 
@@ -32,14 +36,12 @@ def index():
     POST requests are from submissions.
     GET are the initial rendering of the page (no text input or result).
     """
-    logging.debug(f'processing index request {request.method}')
+
     if request.method == 'POST':
         # Get the input from the from, set it to an single string if empty
         text_input = request.form.get('text_input')
-        logging.debug(f'got {text_input} from form')
         text_input = text_input if text_input else ' '
 
-        logging.debug(f'getting clean text')
         clean_text = get_text(text_input)
 
         return render_template('index.html', text_input=text_input,
@@ -50,16 +52,10 @@ def index():
 
 def create_app():
     """Create the Flask application."""
-    profanity.load_censor_words()
     return app
 
 
-# Configure logger
-log_config()
-logging.info('starting application')
-
-
 if __name__ == "__main__":
-    # Create and run application
     app = create_app()
     app.run()
+    profanity.load_censor_words()
