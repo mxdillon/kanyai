@@ -44,7 +44,7 @@ class GenerateLyrics:
         self.vocab_size = self.ind_to_char_map.shape[0]
 
     def define_model(self, batch_size):
-        """Define tensorflow model. Prints model summary to terminal
+        """Define tensorflow  . Prints model summary to terminal
 
         :param batch_size: 2^n - indicates the size of batches model will be trained in. Included as parameter here
         as we want to have a batch size of 1 when generating, ie not the same as when training
@@ -98,17 +98,28 @@ class GenerateLyrics:
         :return: string of generated text
         """
 
+        logging.debug('converting input')
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
         generated_str = []
 
+        logging.debug('resetting model')
         model.reset_states()
+
+        logging.debug('looping through characters')
         for _ in range(num_characters):
+
+            logging.debug('char loop - loading model - I think')
             predictions = model(input_eval)
+
+            logging.debug('char loop - squeezing')
             predictions = tf.squeeze(predictions, 0) / temperature
+
+            logging.debug('char loop - get an id')
             predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
 
+            logging.debug('char loop - looping through characters')
             input_eval = tf.expand_dims([predicted_id], 0)
 
             generated_str.append(self.ind_to_char_map[predicted_id])

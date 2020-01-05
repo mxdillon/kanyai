@@ -67,7 +67,7 @@ def get_term_logs_to_df():
     return pd.concat(dfs)
 
 
-test_terms = ['james', ' ']  # , 'a song about logging', 'the messiah']
+test_terms = ['james', ' ', 'a song about logging', 'the messiah']
 
 if __name__ == '__main__':
     df = get_term_logs_to_df()
@@ -75,3 +75,7 @@ if __name__ == '__main__':
     # Get the time of the next log entry and compare
     df['time_lead'] = df.groupby(['term'])['time'].shift(-1)
     df['time_elapsed'] = df['time_lead'] - df['time']
+
+    df_sum_per_log_message = df.groupby(['msg'])['time_elapsed'] \
+        .sum() \
+        .reset_index()
