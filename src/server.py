@@ -22,13 +22,23 @@ def get_text(text_input: str) -> str:
     else:
         logging.info(f'Generating lyrics for {text_input}')
 
+        logging.debug(f'ensuring space for {text_input}')
         start_phrase = ensure_space(text_input)
+
+        logging.debug(f'calling generator')
         gen_text = call_generator(start_phrase=start_phrase,
                                   weights_path='./model/2_noheaders/ckpt_60',
                                   string_length=500)
+        logging.debug(f'sanitising string')
         gen_text = sanitise_string(text_in=gen_text)
+
+        logging.debug(f'removing start phrase')
         gen_text = remove_start_phrase(text_in=gen_text, start_phrase=start_phrase)
+
+        logging.debug(f'capitalising_first_character')
         gen_text = capitalise_first_character(text_in=gen_text)
+
+        logging.debug(f'replacing newlines with linebreaks')
         gen_text = gen_text.replace('\n', '<br>')
 
         logging.info(f'Generated the song {gen_text}')
