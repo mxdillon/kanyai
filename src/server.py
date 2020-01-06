@@ -9,6 +9,7 @@
 from src.ml.generate_lyrics import call_generator, sanitise_string, remove_start_phrase, capitalise_first_character, \
     ensure_space
 import logging
+import json
 
 
 def get_text(text_input: str) -> str:
@@ -44,3 +45,13 @@ def get_text(text_input: str) -> str:
         logging.info(f'Generated the song {gen_text}')
 
         return gen_text
+
+
+def get_catalogue_songs() -> list:
+    """Read the catalogue json and return results as a list.
+
+    :return: catalogue songs (list)
+    """
+    with open('./static/catalogue.json', 'r') as f:
+        catalogue = json.load(f)
+    return catalogue
