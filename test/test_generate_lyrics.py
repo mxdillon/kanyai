@@ -9,14 +9,7 @@
 import pytest
 from better_profanity import profanity
 from src.config.profanity import custom_badwords
-from src.ml.generate_lyrics import remove_start_phrase, capitalise_first_character, ensure_space, sanitise_string
-
-
-@pytest.mark.parametrize("text_in,start_phrase,expected", [('hello world', 'hello', ' world'),
-                                                           ('Go! over!', 'Go', '! over!'),
-                                                           (' space start', ' spa', 'ce start')])
-def test_remove_start_phrase(text_in, start_phrase, expected):
-    assert remove_start_phrase(text_in=text_in, start_phrase=start_phrase) == expected
+from src.ml.generate_lyrics import capitalise_first_character, ensure_space, sanitise_string
 
 
 @pytest.mark.parametrize("text_in,expected", [('hello World', 'Hello World'),
