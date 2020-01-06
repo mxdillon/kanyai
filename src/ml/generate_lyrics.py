@@ -44,7 +44,7 @@ class GenerateLyrics:
         self.vocab_size = self.ind_to_char_map.shape[0]
 
     def define_model(self, batch_size):
-        """Define tensorflow  . Prints model summary to terminal
+        """Define tensorflow model. Prints model summary to terminal
 
         :param batch_size: 2^n - indicates the size of batches model will be trained in. Included as parameter here
         as we want to have a batch size of 1 when generating, ie not the same as when training

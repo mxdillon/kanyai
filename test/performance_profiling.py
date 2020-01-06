@@ -76,6 +76,12 @@ if __name__ == '__main__':
     df['time_lead'] = df.groupby(['term'])['time'].shift(-1)
     df['time_elapsed'] = df['time_lead'] - df['time']
 
+    df_analysis = df[['term', 'funcName', 'lineno', 'msg', 'time_elapsed']]
+
+    # Which messages are taking have the longest elapsed time?
     df_sum_per_log_message = df.groupby(['msg'])['time_elapsed'] \
         .sum() \
-        .reset_index()
+        .reset_index()\
+        .sort_values(by='time_elapsed', ascending=False)
+
+    df_sum_per_log_message['msg'] = df_sum_per_log_message['msg'][:20]
