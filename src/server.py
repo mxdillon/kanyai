@@ -6,7 +6,7 @@
 :authors
     JP/CW at 02/01/20
 """
-from src.ml.generate_lyrics import call_generator, sanitise_string, remove_start_phrase, capitalise_first_character, \
+from src.ml.generate_lyrics import call_generator, sanitise_string, capitalise_first_character, \
     ensure_space
 import logging
 
@@ -31,9 +31,6 @@ def get_text(text_input: str) -> str:
                                   string_length=500)
         logging.debug(f'sanitising string')
         gen_text = sanitise_string(text_in=gen_text)
-
-        logging.debug(f'removing start phrase')
-        gen_text = remove_start_phrase(text_in=gen_text, start_phrase=start_phrase)
 
         logging.debug(f'capitalising_first_character')
         gen_text = capitalise_first_character(text_in=gen_text)
