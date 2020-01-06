@@ -6,11 +6,9 @@
 :authors
     JP at 04/01/20
 """
-import pytest
 import time
 
 
-@pytest.mark.usefixtures('client')
 def test_post(client):
     """Check the index page loads."""
     start = time.time()

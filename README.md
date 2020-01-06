@@ -41,6 +41,6 @@ gunicorn app:app
 docker build -t kanyai .
 
 # Run and expose port 8080
-docker run -it -p 8080:8080 -e GOOGLE_APPLICATION_CREDENTIALS=kanyai-7efdbd925a1f.json kanyai:latest
+docker run -it -p 8080:8080 -e GOOGLE_APPLICATION_CREDENTIALS=./secrets/kanyai-7efdbd925a1f.json kanyai:latest
 ```
 
