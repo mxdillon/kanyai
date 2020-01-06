@@ -13,7 +13,6 @@ from src.server import get_text
 from src.config.profanity import custom_badwords
 from src.config.log_setup import log_config
 from better_profanity import profanity
-import google.cloud.logging
 import logging
 
 # Create the Flask web application
