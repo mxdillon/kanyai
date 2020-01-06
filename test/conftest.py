@@ -7,7 +7,7 @@ from google.cloud.logging.client import Client
 def env_setup(monkeypatch):
     """Mock the credentials environment variable for when the Google logging client is initialised."""
     monkeypatch.setenv('GOOGLE_APPLICATION_CREDENTIALS',
-                       './test/mock-secrets/sample-creds.json')
+                       './test/mock-data/sample-creds.json')
 
 
 @pytest.fixture
