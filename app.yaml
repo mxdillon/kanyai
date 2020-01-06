@@ -1,4 +1,4 @@
-service: kanyai-ads
+#service: kanyai-ads
 runtime: custom
 env: flex
 automatic_scaling:
