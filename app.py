@@ -16,11 +16,7 @@ from better_profanity import profanity
 import google.cloud.logging
 import logging
 
-# Create client for StackDriver logging
-client = google.cloud.logging.Client()
-client.setup_logging()
-logging.basicConfig(level=logging.INFO)
-
+# Create the Flask web application
 app = Flask(__name__)
 CORS(app)
 

@@ -9,8 +9,8 @@
 import google.cloud.logging
 import logging
 
-LOG_FORMAT = '%(asctime)s' \
-             '%(filename)-25s' \
+LOG_FORMAT = '%(asctime)s ' \
+             '%(filename)-25s ' \
              ':%(lineno)-3s ' \
              '%(funcName)-30s ' \
              '%(levelname)-8s ' \
