@@ -22,25 +22,34 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
 
-    <script data-ad-client="ca-pub-6145098338516606" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!--    <script data-ad-client="ca-pub-6145098338516606" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
 
 </head>
 
+
 <body>
 
-    <div class="pos-f-t">
-        <div class="collapse" id="navbarToggleExternalContent">
-            <div class="p-4 dark">
-                <h4 class="text-white">KanyAI</h4>
-                <span class="text-muted">Kanye West lyrics generator using AI</span>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-dark dark">
+      <a class="navbar-brand" href="#">KanyAI</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+
+            {% if 'greatest-hits' in request.path %}
+                <a class="nav-item nav-link" href="/">Generate Lyrics </a>
+                <a class="nav-item nav-link active" href="greatest-hits">Greatest Hits</a>
+            {% else %}
+                <a class="nav-item nav-link active" href="/">Generate Lyrics </a>
+                <a class="nav-item nav-link" href="greatest-hits">Greatest Hits</a>
+            {% endif %}}
+
         </div>
-        <nav class="navbar navbar-dark dark">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-    </div>
+      </div>
+
+
+    </nav>
 
 
 {% block content %}

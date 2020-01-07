@@ -11,6 +11,7 @@ import json
 import numpy as np
 import tensorflow as tf
 from better_profanity import profanity
+import logging
 
 
 class GenerateLyrics:
@@ -97,22 +98,32 @@ class GenerateLyrics:
         :return: string of generated text
         """
 
+        logging.debug('converting input')
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
         generated_str = []
 
+        logging.debug('resetting model')
         model.reset_states()
+
+        logging.debug('looping through characters')
         for _ in range(num_characters):
+            logging.debug('char loop - loading model - I think')
             predictions = model(input_eval)
+
+            logging.debug('char loop - squeezing')
             predictions = tf.squeeze(predictions, 0) / temperature
+
+            logging.debug('char loop - get an id')
             predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
 
+            logging.debug('char loop - looping through characters')
             input_eval = tf.expand_dims([predicted_id], 0)
 
             generated_str.append(self.ind_to_char_map[predicted_id])
 
-        return (start_string + ''.join(generated_str))
+        return ''.join(generated_str)
 
 
 def call_generator(start_phrase: str, weights_path: str, string_length: int) -> str:
@@ -124,13 +135,18 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
     :return: string of generated lyrics appended to the start phrase
     """
 
+    logging.debug(f'leading GenerateLyrics')
     generator = GenerateLyrics(embedding_dim=512)
+
+    logging.debug('loading character maps')
     generator.load_character_maps(
         character_map_load_path='./model/2_noheaders/character_index_map.json',
         index_map_load_path='./model/2_noheaders/index_character_map.npy')
 
+    logging.debug('rebuilding model')
     prediction_model = generator.rebuild_model(batch_size=1,
                                                weights_path=weights_path)
+    logging.debug('generating text')
     generated_text = generator.generate_text(model=prediction_model,
                                              start_string=start_phrase,
                                              num_characters=string_length,
@@ -146,16 +162,6 @@ def sanitise_string(text_in: str) -> str:
     :return: string of sanitised text
     """
     return profanity.censor(text=text_in)
-
-
-def remove_start_phrase(text_in: str, start_phrase: str) -> str:
-    """Remove start string from returned result
-
-    :param text_in: string with substring to be removed from the start
-    :param start_phrase: substring to remove from the start
-    :return: string to be returned to user
-    """
-    return text_in[len(start_phrase):]
 
 
 def capitalise_first_character(text_in: str) -> str:

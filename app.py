@@ -9,18 +9,19 @@
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from src.server import get_text
+from src.server import get_text, get_greatest_hits
+from src.config.profanity import custom_badwords
+from src.config.log_setup import log_config
 from better_profanity import profanity
-import google.cloud.logging
 import logging
 
-# Create client for StackDriver logging
-client = google.cloud.logging.Client()
-client.setup_logging()
-logging.basicConfig(level=logging.INFO)
-
+# Create the Flask web application
 app = Flask(__name__)
 CORS(app)
+
+# Configure logger
+log_config()
+logging.info('starting application')
 
 
 @app.route('/health', methods=['GET'])
@@ -50,6 +51,12 @@ def index():
     return render_template('index.html', text_input="", result="")
 
 
+@app.route("/greatest-hits", methods=["GET"])
+def greatest_hits():
+    greatest_hits_list = get_greatest_hits()
+    return render_template('greatest_hits.html', greatest_hits=greatest_hits_list)
+
+
 def create_app():
     """Create the Flask application."""
     return app
@@ -58,4 +65,4 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     app.run()
-    profanity.load_censor_words()
+    profanity.add_censor_words(custom_badwords)
