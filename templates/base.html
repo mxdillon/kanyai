@@ -21,15 +21,36 @@
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
           integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+    <script data-ad-client="ca-pub-6145098338516606" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
 </head>
 
 
 <body>
 
-    <div class="col-xl-12">
-        <h2 style="color:#7A7A7A;">KanyAI</h2>
-        <h5 style="color:#7A7A7A;">Generate a new track by providing a title</h5>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark dark">
+      <a class="navbar-brand" href="#">KanyAI</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+
+            {% if 'greatest-hits' in request.path %}
+                <a class="nav-item nav-link" href="/">Generate Lyrics </a>
+                <a class="nav-item nav-link active" href="greatest-hits">Greatest Hits</a>
+            {% else %}
+                <a class="nav-item nav-link active" href="/">Generate Lyrics </a>
+                <a class="nav-item nav-link" href="greatest-hits">Greatest Hits</a>
+            {% endif %}}
+
+        </div>
+      </div>
+
+
+    </nav>
+
 
 {% block content %}
 {% endblock %}

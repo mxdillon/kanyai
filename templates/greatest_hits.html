@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Page Content -->
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 text-center">
+
+                <div class="text">
+                    {% autoescape false %}
+                    {% for hit in greatest_hits %}
+                    <tr>
+                        <br>
+                        <br>
+                        <div class="card text-white bg-dark mb-3">
+                            <div class="card-body">
+                                <blockquote class="blockquote mb-0">
+                                    <p class="text-white bg-dark">{{ hit['lyrics'] }}</p>
+                                    <footer class="blockquote-footer text-white bg-dark italic">A song about {{ hit['title'] }} by KanyAI</footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </tr>
+                    {% endfor %}
+                    {% endautoescape %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
