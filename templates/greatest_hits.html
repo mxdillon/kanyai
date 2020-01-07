@@ -8,15 +8,15 @@
 
                 <div class="text">
                     {% autoescape false %}
-                    {% for catalogue_song in catalogue_songs %}
+                    {% for hit in greatest_hits %}
                     <tr>
                         <br>
                         <br>
                         <div class="card text-white bg-dark mb-3">
                             <div class="card-body">
                                 <blockquote class="blockquote mb-0">
-                                    <p class="text-white bg-dark">{{ catalogue_song['lyrics'] }}</p>
-                                    <footer class="blockquote-footer text-white bg-dark italic">A song about {{ catalogue_song['title'] }} by KanyAI</footer>
+                                    <p class="text-white bg-dark">{{ hit['lyrics'] }}</p>
+                                    <footer class="blockquote-footer text-white bg-dark italic">A song about {{ hit['title'] }} by KanyAI</footer>
                                 </blockquote>
                             </div>
                         </div>

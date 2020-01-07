@@ -9,7 +9,7 @@
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from src.server import get_text, get_catalogue_songs
+from src.server import get_text, get_greatest_hits
 from src.config.profanity import custom_badwords
 from src.config.log_setup import log_config
 from better_profanity import profanity
@@ -51,10 +51,10 @@ def index():
     return render_template('index.html', text_input="", result="")
 
 
-@app.route("/catalogue", methods=["GET"])
-def catalogue():
-    catalogue_songs = get_catalogue_songs()
-    return render_template('catalogue.html', catalogue_songs=catalogue_songs)
+@app.route("/greatest-hits", methods=["GET"])
+def greatest_hits():
+    greatest_hits_list = get_greatest_hits()
+    return render_template('greatest_hits.html', greatest_hits=greatest_hits_list)
 
 
 def create_app():

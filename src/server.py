@@ -47,11 +47,11 @@ def get_text(text_input: str) -> str:
         return gen_text
 
 
-def get_catalogue_songs() -> list:
-    """Read the catalogue json and return results as a list.
+def get_greatest_hits() -> list:
+    """Read the greatest hits json and return results as a list.
 
-    :return: catalogue songs (list)
+    :return: greatest hits (list)
     """
-    with open('./static/catalogue.json', 'r') as f:
-        catalogue = json.load(f)
-    return catalogue
+    with open('./static/greatest_hits.json', 'r') as f:
+        greatest_hits = json.load(f)
+    return greatest_hits

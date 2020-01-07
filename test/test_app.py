@@ -24,3 +24,9 @@ def test_post(client):
     """Check the post request for generating lyrics."""
     response = client.post('/')
     assert response.status_code == 200
+
+
+def test_greatest_hits(client):
+    """Check the get request for generating the greatest hits."""
+    response = client.get('/greatest-hits')
+    assert response.status_code == 200
