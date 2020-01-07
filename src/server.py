@@ -9,6 +9,7 @@
 from src.ml.generate_lyrics import call_generator, sanitise_string, capitalise_first_character, \
     ensure_space
 import logging
+import json
 
 
 def get_text(text_input: str) -> str:
@@ -41,3 +42,13 @@ def get_text(text_input: str) -> str:
         logging.info(f'Generated the song {gen_text}')
 
         return gen_text
+
+
+def get_greatest_hits() -> list:
+    """Read the greatest hits json and return results as a list.
+
+    :return: greatest hits (list)
+    """
+    with open('./static/greatest_hits.json', 'r') as f:
+        greatest_hits = json.load(f)
+    return greatest_hits
