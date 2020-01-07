@@ -6,6 +6,7 @@
 :authors
     JP/CW at 02/01/20
 """
+from src.config.profanity import custom_badwords
 from src.ml.generate_lyrics import call_generator, sanitise_string, capitalise_first_character, \
     ensure_space
 import logging
@@ -31,7 +32,7 @@ def get_text(text_input: str) -> str:
                                   weights_path='./model/3_sanitised80chars/ckpt_60',
                                   string_length=500)
         logging.debug(f'sanitising string')
-        gen_text = sanitise_string(text_in=gen_text)
+        gen_text = sanitise_string(text_in=gen_text, custom_badwords=custom_badwords)
 
         logging.debug(f'capitalising_first_character')
         gen_text = capitalise_first_character(text_in=gen_text)
