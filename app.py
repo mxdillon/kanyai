@@ -10,7 +10,9 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from src.server import get_text, get_greatest_hits
+from src.ml.generate_lyrics import sanitise_string
 from src.config.log_setup import log_config
+from src.config.profanity import custom_badwords
 import logging
 
 # Create the Flask web application
@@ -37,13 +39,14 @@ def index():
     """
 
     if request.method == 'POST':
-        # Get the input from the from, set it to an single string if empty
+        # Get the input from the form, set it to an single space if empty
         text_input = request.form.get('text_input')
         text_input = text_input if text_input else ' '
-
+        # Generate lyrics and sanitise user input
         clean_text = get_text(text_input)
+        clean_input = sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
 
-        return render_template('index.html', text_input=text_input,
+        return render_template('index.html', text_input=clean_input,
                                result=clean_text)
 
     return render_template('index.html', text_input="", result="")
