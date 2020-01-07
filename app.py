@@ -10,9 +10,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from src.server import get_text, get_greatest_hits
-from src.config.profanity import custom_badwords
 from src.config.log_setup import log_config
-from better_profanity import profanity
 import logging
 
 # Create the Flask web application
@@ -65,4 +63,3 @@ def create_app():
 if __name__ == "__main__":
     app = create_app()
     app.run()
-    profanity.add_censor_words(custom_badwords)

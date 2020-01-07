@@ -7,12 +7,8 @@
     05/01/20
 """
 
-custom_badwords = ['bitchs',
-                   'bitchez',
-                   'ho',
-                   'hoe',
-                   'hos',
-                   'hoes',
-                   'niggas',
-                   'niggers',
+custom_badwords = ['bitch',
+                   'fuck',
+                   'nigg',
+                   'shit',
                    ]
