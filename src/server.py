@@ -29,7 +29,7 @@ def get_text(text_input: str) -> str:
 
         logging.debug(f'calling generator')
         gen_text = call_generator(start_phrase=start_phrase,
-                                  weights_path='./model/3_sanitised80chars/ckpt_60',
+                                  weights_path='./model/3_sanitised80chars/ckpt_75',
                                   string_length=500)
         logging.debug(f'sanitising string')
         gen_text = sanitise_string(text_in=gen_text, custom_badwords=custom_badwords)
