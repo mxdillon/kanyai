@@ -109,7 +109,6 @@ class GenerateLyrics:
 
         logging.debug('looping through characters')
         for _ in range(num_characters):
-
             logging.debug('char loop - loading model - I think')
             predictions = model(input_eval)
 
@@ -124,7 +123,7 @@ class GenerateLyrics:
 
             generated_str.append(self.ind_to_char_map[predicted_id])
 
-        return (start_string + ''.join(generated_str))
+        return ''.join(generated_str)
 
 
 def call_generator(start_phrase: str, weights_path: str, string_length: int) -> str:
@@ -163,16 +162,6 @@ def sanitise_string(text_in: str) -> str:
     :return: string of sanitised text
     """
     return profanity.censor(text=text_in)
-
-
-def remove_start_phrase(text_in: str, start_phrase: str) -> str:
-    """Remove start string from returned result
-
-    :param text_in: string with substring to be removed from the start
-    :param start_phrase: substring to remove from the start
-    :return: string to be returned to user
-    """
-    return text_in[len(start_phrase):]
 
 
 def capitalise_first_character(text_in: str) -> str:
