@@ -7,7 +7,6 @@
     MD at 03/01/20
 """
 import pytest
-from better_profanity import profanity
 from src.config.profanity import custom_badwords
 from src.ml.generate_lyrics import capitalise_first_character, ensure_space, sanitise_string
 
@@ -27,12 +26,9 @@ def test_ensure_space(text_in, expected):
 
 
 @pytest.mark.parametrize("text_in,expected", [('fuck shit', '**** ****'),
-                                              ('hoe bitchs', '**** ****'),
-                                              ('n1gga niggas', '**** ****')])
+                                              ('hi bitches', 'hi ****es'),
+                                              ('nigglsjk asldfjfuck', '****lsjk asldfj****'),
+                                              ('BItch fUCk', '**** ****')])
 def test_sanitise_string(text_in, expected):
-    """Check that custom profanities are being redacted.
-
-    Adds censored words here as this is done in app.py so that it only happens once when the app is running, instead of
-    every time a POST request is made."""
-    profanity.add_censor_words(custom_badwords)
-    assert sanitise_string(text_in=text_in) == expected
+    """Check that custom profanities are being redacted."""
+    assert sanitise_string(text_in=text_in, custom_badwords=custom_badwords) == expected

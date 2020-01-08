@@ -7,10 +7,10 @@
     MD at 20/12/19
 """
 
+import re
 import json
 import numpy as np
 import tensorflow as tf
-from better_profanity import profanity
 import logging
 
 
@@ -140,8 +140,8 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
 
     logging.debug('loading character maps')
     generator.load_character_maps(
-        character_map_load_path='./model/2_noheaders/character_index_map.json',
-        index_map_load_path='./model/2_noheaders/index_character_map.npy')
+        character_map_load_path='./model/3_sanitised80chars/character_index_map.json',
+        index_map_load_path='./model/3_sanitised80chars/index_character_map.npy')
 
     logging.debug('rebuilding model')
     prediction_model = generator.rebuild_model(batch_size=1,
@@ -150,18 +150,20 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
     generated_text = generator.generate_text(model=prediction_model,
                                              start_string=start_phrase,
                                              num_characters=string_length,
-                                             temperature=0.9)
+                                             temperature=0.88)
 
     return generated_text
 
 
-def sanitise_string(text_in: str) -> str:
+def sanitise_string(text_in: str, custom_badwords: list) -> str:
     """Clean an input string of all swear words. Replace them with '****'.
 
     :param text_in: string containing text to be sanitised
     :return: string of sanitised text
     """
-    return profanity.censor(text=text_in)
+    for word in custom_badwords:
+        text_in = re.sub(word, '****', text_in, flags=re.I)
+    return text_in
 
 
 def capitalise_first_character(text_in: str) -> str:
