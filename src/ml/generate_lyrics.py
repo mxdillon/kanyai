@@ -29,7 +29,7 @@ class GenerateLyrics:
         self.char_to_ind_map = None
         self.vocab_size = None
 
-    def load_character_maps(self, character_map_load_path: str, index_map_load_path: str) -> tuple:
+    def load_character_maps(self, character_map_load_path: str, index_map_load_path: str):
         """Load array and dictionary into memory.
 
         :param character_map_load_path: str containing path of character to index map stored as .json
@@ -89,8 +89,7 @@ class GenerateLyrics:
         """Generate string starting with start_string of length num_characters using rebuilt model.
 
         :param model: model rebuilt with weights from a training checkpoint
-        :param start_string: str user wishes to start generation with. Can be a single letter. May be case sensitive,
-        depending on the data used for training
+        :param start_string: str user wishes to start generation with. Can be a single letter.
         :param num_characters: number of characters you wish to be generated
         :param self.ind_to_char_map: np.array mapping indices back to characters
         :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
