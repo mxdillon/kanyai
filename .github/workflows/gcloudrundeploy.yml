@@ -9,34 +9,27 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
+      - name: Checkout
+        uses: actions/checkout@master
 
-    # Setup gcloud CLI
-    - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
-      with:
-        version: '270.0.0'
-        service_account_key: ${{ secrets.GCLOUD_AUTH }}
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '270.0.0'
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
 
-    # Configure docker to use the gcloud command-line tool as a credential helper
-    - run: |
-        # Set up docker to authenticate
-        # via gcloud command-line tool.
-        gcloud auth configure-docker
+      # Configure docker to use the gcloud command-line tool as a credential helper
+      - run: |
+          # Set up docker to authenticate
+          # via gcloud command-line tool.
+          gcloud auth configure-docker
 
-    # Build the Docker image
-    - name: Build
-      run: |
-        docker build . --tag eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
+      # Build and publish the Docker image to Google Container Registry
+      - name: Build and Publish
+        run: |
+          gcloud builds submit --tag gcr.io/kanyai/kanyai
 
-    # Push the Docker image to Google Container Registry
-    - name: Publish
-      run: |
-        docker push eu.gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }}
-
-    # Deploy the Docker image to the GKE cluster
-    - name: Deploy
-      run: |
-        gcloud components install beta && gcloud beta run deploy ${{ secrets.GCLOUD_APP_NAME }} --quiet --image eu
-        .gcr.io/${{ secrets.GCLOUD_PROJECT }}/${{ secrets.GCLOUD_APP_NAME }} --project ${{ secrets.GCLOUD_PROJECT }}
-        --region europe-west1 --platform managed --memory 2Gi --cpu 2000m --timeout=[300]
+      # Deploy the Docker image to the GKE cluster
+      - name: Deploy
+        run: |
+          gcloud components install beta && gcloud beta run deploy kanyai --quiet --image gcr.io/kanyai/kanyai --project kanyai --region europe-west1 --platform managed --memory 2Gi --cpu 2000m --timeout=[300]
