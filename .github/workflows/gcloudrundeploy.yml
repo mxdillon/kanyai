@@ -28,4 +28,4 @@ jobs:
       # Deploy the Docker image to the GKE cluster
       - name: Deploy
         run: |
-          gcloud components install beta && gcloud beta run deploy kanyai --quiet --image gcr.io/kanyai/kanyai --project kanyai --region europe-west1 --platform managed --memory 2Gi --cpu 2000m --timeout=[300]
+          gcloud components install beta && gcloud beta run deploy kanyai --quiet --image gcr.io/kanyai/kanyai --project kanyai --region europe-west1 --platform managed --memory 2Gi --timeout=[300]
