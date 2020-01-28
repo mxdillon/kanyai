@@ -18,14 +18,10 @@ jobs:
           version: '270.0.0'
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
 
-      # Configure docker to use the gcloud command-line tool as a credential helper
-      - run: |
-          # Set up docker to authenticate
-          # via gcloud command-line tool.
-          gcloud auth configure-docker
-
       # Build and publish the Docker image to Google Container Registry
       - name: Build and Publish
+        env:
+          CLOUDSDK_CORE_PROJECT: kanyai
         run: |
           gcloud builds submit --tag gcr.io/kanyai/kanyai
 
