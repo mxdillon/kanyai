@@ -5,4 +5,4 @@ google-cloud-logging==1.14.0
 gunicorn==20.0.4
 Jinja2==2.10.3
 numpy==1.16.4
-tensorflow==2.0.0a0pip
+tensorflow==2.0.0a0
