@@ -7,7 +7,7 @@
     JP at 05/01/20
 """
 from src.config.log_setup import log_config
-from src.server import get_text
+
 import logging
 import time
 import pandas as pd
