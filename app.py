@@ -9,7 +9,7 @@
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from src.server import get_text, get_greatest_hits
+from src.server import get_text
 from src.ml.generate_lyrics import sanitise_string
 from src.config.log_setup import log_config
 from src.config.profanity import custom_badwords
@@ -50,12 +50,6 @@ def index():
                                result=clean_text)
 
     return render_template('index.html', text_input="", result="")
-
-
-@app.route("/greatest-hits", methods=["GET"])
-def greatest_hits():
-    greatest_hits_list = get_greatest_hits()
-    return render_template('greatest_hits.html', greatest_hits=greatest_hits_list)
 
 
 def create_app():
