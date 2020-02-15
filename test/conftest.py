@@ -1,6 +1,17 @@
+#!/usr/bin/python
+# coding=utf-8
+"""Fixtures for all tests.
+:usage:
+    To be run with every commit
+:authors
+    MD at 03/01/20
+"""
+
+import os
 import pytest
 import logging
 from google.cloud.logging.client import Client
+from src.ml.generate_lyrics import GenerateLyrics
 
 
 @pytest.fixture(autouse=True)
@@ -25,3 +36,28 @@ def client():
                 test_logger.removeHandler(handler)
 
     return client
+
+
+@pytest.fixture(scope='session')
+def parent_directory():
+    return os.path.join(os.getcwd(), os.pardir)
+
+
+@pytest.fixture(scope='session')
+def generator_class():
+    return GenerateLyrics(embedding_dim=512)
+
+
+@pytest.fixture(scope='session')
+def load_maps(generator_class, parent_directory):
+    generator_class.load_character_maps(
+        character_map_load_path=os.path.join(parent_directory, 'model/character_index_map.json'),
+        index_map_load_path=os.path.join(parent_directory, 'model/index_character_map.npy'))
+    return generator_class
+
+
+@pytest.fixture(scope='session')
+def rebuild_model(load_maps, parent_directory):
+    load_maps.rebuild_model(batch_size=1,
+                            weights_path=os.path.join(parent_directory, 'model/ckpt_'))
+    return load_maps
