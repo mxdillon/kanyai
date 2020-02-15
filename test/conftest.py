@@ -7,7 +7,6 @@
     MD at 03/01/20
 """
 
-import os
 import pytest
 import logging
 from google.cloud.logging.client import Client
