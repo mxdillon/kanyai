@@ -45,7 +45,7 @@ def generator_class():
 @pytest.fixture(scope='session')
 def load_maps(generator_class):
     generator_class.load_character_maps(
-        character_map_load_path='./test/mock-data/model/character_index_map.json',
+        character_map_load_path='./test/mock-data/character_index_map.json',
         index_map_load_path='./test/mock-data/index_character_map.npy')
     return generator_class
 
