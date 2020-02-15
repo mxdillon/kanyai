@@ -45,13 +45,13 @@ def generator_class():
 @pytest.fixture(scope='session')
 def load_maps(generator_class):
     generator_class.load_character_maps(
-        character_map_load_path='../model/character_index_map.json',
-        index_map_load_path='../model/index_character_map.npy')
+        character_map_load_path='./test/mock-data/model/character_index_map.json',
+        index_map_load_path='./test/mock-data/index_character_map.npy')
     return generator_class
 
 
 @pytest.fixture(scope='session')
 def rebuild_model(load_maps):
     load_maps.rebuild_model(batch_size=1,
-                            weights_path='../model/ckpt_')
+                            weights_path='./test/mock-data/ckpt_')
     return load_maps
