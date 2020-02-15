@@ -39,25 +39,20 @@ def client():
 
 
 @pytest.fixture(scope='session')
-def parent_directory():
-    return os.path.join(os.getcwd(), os.pardir)
-
-
-@pytest.fixture(scope='session')
 def generator_class():
     return GenerateLyrics(embedding_dim=512)
 
 
 @pytest.fixture(scope='session')
-def load_maps(generator_class, parent_directory):
+def load_maps(generator_class):
     generator_class.load_character_maps(
-        character_map_load_path=os.path.join(parent_directory, 'model/character_index_map.json'),
-        index_map_load_path=os.path.join(parent_directory, 'model/index_character_map.npy'))
+        character_map_load_path='../model/character_index_map.json',
+        index_map_load_path='../model/index_character_map.npy')
     return generator_class
 
 
 @pytest.fixture(scope='session')
-def rebuild_model(load_maps, parent_directory):
+def rebuild_model(load_maps):
     load_maps.rebuild_model(batch_size=1,
-                            weights_path=os.path.join(parent_directory, 'model/ckpt_'))
+                            weights_path='../model/ckpt_')
     return load_maps
