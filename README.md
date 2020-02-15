@@ -1,6 +1,6 @@
 # kanyai
 
-KanyAI NLG
+KanyAI lyric generator created by [mxdillon](https://github.com/mxdillon) & [j-penson](https://github.com/j-penson)
 
 ### Local testing
 
