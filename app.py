@@ -10,7 +10,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from src.server import get_text
-from src.ml.generate_lyrics import sanitise_string
+from src.ml.generate_lyrics import CleanOutput
 from src.config.log_setup import log_config
 from src.config.profanity import custom_badwords
 import logging
@@ -44,7 +44,7 @@ def index():
         text_input = text_input if text_input else ' '
         # Generate lyrics and sanitise user input
         clean_text = get_text(text_input)
-        clean_input = sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
+        clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
 
         return render_template('index.html', text_input=clean_input,
                                result=clean_text)

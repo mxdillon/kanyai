@@ -1,6 +1,6 @@
 #!/usr/bin/python
 # coding=utf-8
-""" Machine Learning Model
+"""Machine Learning Model
 :usage:
     Class to generate lyrics based on a user-defined start phrase and a pretrained model.
 :authors
@@ -29,7 +29,7 @@ class GenerateLyrics:
         self.char_to_ind_map = None
         self.vocab_size = None
 
-    def load_character_maps(self, character_map_load_path: str, index_map_load_path: str) -> tuple:
+    def load_character_maps(self, character_map_load_path: str, index_map_load_path: str):
         """Load array and dictionary into memory.
 
         :param character_map_load_path: str containing path of character to index map stored as .json
@@ -48,9 +48,9 @@ class GenerateLyrics:
 
         :param batch_size: 2^n - indicates the size of batches model will be trained in. Included as parameter here
         as we want to have a batch size of 1 when generating, ie not the same as when training
-        :return: tf model
+        :return: None
         """
-        model = tf.keras.Sequential([
+        self.model = tf.keras.Sequential([
             tf.keras.layers.Embedding(input_dim=self.vocab_size,
                                       output_dim=self.embedding_dim,
                                       batch_input_shape=[batch_size, None]),
@@ -67,30 +67,26 @@ class GenerateLyrics:
             tf.keras.layers.Dense(units=self.vocab_size)
         ])
 
-        print(model.summary())
-        return model
+        print(self.model.summary())
 
     def rebuild_model(self, batch_size, weights_path: str):
         """Rebuild model with best weights for text generation.
 
         :param batch_size: size of batch of examples to be generated. Has only been tested on =1
         :param weights_path: str of path to weights file to use
-        :return: tf.model
+        :return: None
         """
 
-        prediction_model = self.define_model(batch_size=batch_size)
-        prediction_model.load_weights(weights_path)
-        prediction_model.build(tf.TensorShape([batch_size, None]))
-        print(prediction_model.summary())
+        self.define_model(batch_size=batch_size)
+        self.model.load_weights(weights_path)
+        self.model.build(tf.TensorShape([batch_size, None]))
+        print(self.model.summary())
 
-        return prediction_model
-
-    def generate_text(self, model, start_string: str, num_characters: int, temperature: float):
+    def generate_text(self, start_string: str, num_characters: int, temperature: float):
         """Generate string starting with start_string of length num_characters using rebuilt model.
 
         :param model: model rebuilt with weights from a training checkpoint
-        :param start_string: str user wishes to start generation with. Can be a single letter. May be case sensitive,
-        depending on the data used for training
+        :param start_string: str user wishes to start generation with. Can be a single letter.
         :param num_characters: number of characters you wish to be generated
         :param self.ind_to_char_map: np.array mapping indices back to characters
         :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
@@ -105,12 +101,12 @@ class GenerateLyrics:
         generated_str = []
 
         logging.debug('resetting model')
-        model.reset_states()
+        self.model.reset_states()
 
         logging.debug('looping through characters')
         for _ in range(num_characters):
             logging.debug('char loop - loading model - I think')
-            predictions = model(input_eval)
+            predictions = self.model(input_eval)
 
             logging.debug('char loop - squeezing')
             predictions = tf.squeeze(predictions, 0) / temperature
@@ -124,6 +120,46 @@ class GenerateLyrics:
             generated_str.append(self.ind_to_char_map[predicted_id])
 
         return ''.join(generated_str)
+
+
+class CleanOutput:
+    """Format output strings so they can be presented to user."""
+
+    @staticmethod
+    def sanitise_string(text_in: str, custom_badwords: list) -> str:
+        """Clean an input string of all swear words. Replace them with '****'.
+
+        :param text_in: string containing text to be sanitised
+        :return: string of sanitised text
+        """
+        for word in custom_badwords:
+            text_in = re.sub(word, '****', text_in, flags=re.I)
+        return text_in
+
+    @staticmethod
+    def capitalise_first_character(text_in: str) -> str:
+        """Capitalise the first character in the generated lyrics. If first character is a space, remove it and capitalise.
+
+        :param text_in: string of generated lyrics
+        :return: string with capital at the start
+        """
+        if text_in[0] == ' ':
+            text_rtn = text_in[1:]
+        else:
+            text_rtn = text_in
+        return text_rtn[0].upper() + text_rtn[1:]
+
+    @staticmethod
+    def ensure_space(text_in: str) -> str:
+        """Ensure there is a space at the end of the user input so that lyric generation starts by generating a new word.
+
+        :param text_in: text input from user
+        :return: text input from user, ensuring there is a space at the end
+        """
+        if text_in[-1] == ' ':
+            return text_in
+        else:
+            return text_in + ' '
 
 
 def call_generator(start_phrase: str, weights_path: str, string_length: int) -> str:
@@ -140,52 +176,15 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
 
     logging.debug('loading character maps')
     generator.load_character_maps(
-        character_map_load_path='./model/3_sanitised80chars/character_index_map.json',
-        index_map_load_path='./model/3_sanitised80chars/index_character_map.npy')
+        character_map_load_path='./model/character_index_map.json',
+        index_map_load_path='./model/index_character_map.npy')
 
     logging.debug('rebuilding model')
-    prediction_model = generator.rebuild_model(batch_size=1,
-                                               weights_path=weights_path)
+    generator.rebuild_model(batch_size=1,
+                            weights_path=weights_path)
     logging.debug('generating text')
-    generated_text = generator.generate_text(model=prediction_model,
-                                             start_string=start_phrase,
+    generated_text = generator.generate_text(start_string=start_phrase,
                                              num_characters=string_length,
                                              temperature=0.88)
 
     return generated_text
-
-
-def sanitise_string(text_in: str, custom_badwords: list) -> str:
-    """Clean an input string of all swear words. Replace them with '****'.
-
-    :param text_in: string containing text to be sanitised
-    :return: string of sanitised text
-    """
-    for word in custom_badwords:
-        text_in = re.sub(word, '****', text_in, flags=re.I)
-    return text_in
-
-
-def capitalise_first_character(text_in: str) -> str:
-    """Capitalise the first character in the generated lyrics. If first character is a space, remove it and capitalise.
-
-    :param text_in: string of generated lyrics
-    :return: string with capital at the start
-    """
-    if text_in[0] == ' ':
-        text_rtn = text_in[1:]
-    else:
-        text_rtn = text_in
-    return text_rtn[0].upper() + text_rtn[1:]
-
-
-def ensure_space(text_in: str) -> str:
-    """Ensure there is a space at the end of the user input so that lyric generation starts by generating a new word.
-
-    :param text_in: text input from user
-    :return: text input from user, ensuring there is a space at the end
-    """
-    if text_in[-1] == ' ':
-        return text_in
-    else:
-        return text_in + ' '
