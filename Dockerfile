@@ -1,5 +1,4 @@
 FROM python:onbuild
-WORKDIR .app/
 COPY requirements.txt .
 ENV PORT 8080
 EXPOSE 8080
