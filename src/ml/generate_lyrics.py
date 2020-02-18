@@ -185,6 +185,6 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
     logging.debug('generating text')
     generated_text = generator.generate_text(start_string=start_phrase,
                                              num_characters=string_length,
-                                             temperature=0.88)
+                                             temperature=0.87)
 
     return generated_text
