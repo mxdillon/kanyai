@@ -120,5 +120,3 @@ class GenerateLyrics:
             generated_str.append(self.ind_to_char_map[predicted_id])
 
         return ''.join(generated_str)
-
-
