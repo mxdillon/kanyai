@@ -7,7 +7,6 @@
     MD at 20/12/19
 """
 
-import re
 import json
 import numpy as np
 import tensorflow as tf
@@ -123,69 +122,3 @@ class GenerateLyrics:
         return ''.join(generated_str)
 
 
-class CleanOutput:
-    """Format output strings so they can be presented to user."""
-
-    @staticmethod
-    def sanitise_string(text_in: str, custom_badwords: list) -> str:
-        """Clean an input string of all swear words. Replace them with '****'.
-
-        :param text_in: string containing text to be sanitised
-        :return: string of sanitised text
-        """
-        for word in custom_badwords:
-            text_in = re.sub(word, '****', text_in, flags=re.I)
-        return text_in
-
-    @staticmethod
-    def capitalise_first_character(text_in: str) -> str:
-        """Capitalise the first character in the generated lyrics. If first character is a space, remove it and capitalise.
-
-        :param text_in: string of generated lyrics
-        :return: string with capital at the start
-        """
-        if text_in[0] == ' ':
-            text_rtn = text_in[1:]
-        else:
-            text_rtn = text_in
-        return text_rtn[0].upper() + text_rtn[1:]
-
-    @staticmethod
-    def ensure_space(text_in: str) -> str:
-        """Ensure there is a space at the end of the user input so that lyric generation starts by generating a new word.
-
-        :param text_in: text input from user
-        :return: text input from user, ensuring there is a space at the end
-        """
-        if text_in[-1] == ' ':
-            return text_in
-        else:
-            return text_in + ' '
-
-
-def call_generator(start_phrase: str, weights_path: str, string_length: int) -> str:
-    """Instantiate the generator class with a saved model and generate a lyrics string.
-
-    :param start_phrase: user defined string to start the lyrics
-    :param weights_path: path to the model file containing the weights
-    :param string_length: length of string to be generated
-    :return: string of generated lyrics appended to the start phrase
-    """
-
-    logging.debug(f'leading GenerateLyrics')
-    generator = GenerateLyrics(embedding_dim=512)
-
-    logging.debug('loading character maps')
-    generator.load_character_maps(
-        character_map_load_path='./model/character_index_map.json',
-        index_map_load_path='./model/index_character_map.npy')
-
-    logging.debug('rebuilding model')
-    generator.rebuild_model(batch_size=1,
-                            weights_path=weights_path)
-    logging.debug('generating text')
-    generated_text = generator.generate_text(start_string=start_phrase,
-                                             num_characters=string_length,
-                                             temperature=0.87)
-
-    return generated_text
