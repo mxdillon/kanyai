@@ -6,8 +6,8 @@
 :authors
     JP/CW at 02/01/20
 """
-from src.config.profanity import custom_badwords
-from src.ml.generate_lyrics import call_generator, CleanOutput
+from app.config.profanity import custom_badwords
+from app.ml.generate_lyrics import call_generator, CleanOutput
 import logging
 
 

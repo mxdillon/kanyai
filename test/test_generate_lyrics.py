@@ -8,8 +8,8 @@
 """
 
 import pytest
-from src.config.profanity import custom_badwords
-from src.ml.generate_lyrics import CleanOutput
+from app.config.profanity import custom_badwords
+from app.ml.generate_lyrics import CleanOutput
 
 
 def test_character_map_loaded(load_maps):
