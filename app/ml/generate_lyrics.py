@@ -85,10 +85,8 @@ class GenerateLyrics:
     def generate_text(self, start_string: str, num_characters: int, temperature: float):
         """Generate string starting with start_string of length num_characters using rebuilt model.
 
-        :param model: model rebuilt with weights from a training checkpoint
         :param start_string: str user wishes to start generation with. Can be a single letter.
         :param num_characters: number of characters you wish to be generated
-        :param self.ind_to_char_map: np.array mapping indices back to characters
         :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
         lower is more predictable, higher is more surprising
         :return: string of generated text
