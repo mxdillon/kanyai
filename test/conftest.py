@@ -10,7 +10,7 @@
 import pytest
 import logging
 from google.cloud.logging.client import Client
-from src.ml.generate_lyrics import GenerateLyrics
+from app.ml.generate_lyrics import GenerateLyrics
 
 
 @pytest.fixture(autouse=True)
@@ -23,7 +23,7 @@ def env_setup(monkeypatch):
 @pytest.fixture
 def client():
     """Flask test client with Google Cloud logging client removed."""
-    from app import create_app
+    from main import create_app
     app = create_app()
     client = app.test_client()
 

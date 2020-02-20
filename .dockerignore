@@ -1,6 +1,6 @@
 env/
 test/
-secrets/
+#secrets/
 .coverage
 .github
 .pytest_cache

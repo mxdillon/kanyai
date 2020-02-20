@@ -9,10 +9,10 @@
 
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
-from src.server import get_text
-from src.ml.generate_lyrics import CleanOutput
-from src.config.log_setup import log_config
-from src.config.profanity import custom_badwords
+from app.server import get_text
+from app.ml.clean_output import CleanOutput
+from app.config.log_setup import log_config
+from app.config.profanity import custom_badwords
 import logging
 
 # Create the Flask web application
