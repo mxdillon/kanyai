@@ -28,6 +28,7 @@ class GenerateLyrics:
         self.ind_to_char_map = None
         self.char_to_ind_map = None
         self.vocab_size = None
+        self.model = None
 
     def load_character_maps(self, character_map_load_path: str, index_map_load_path: str):
         """Load array and dictionary into memory.
