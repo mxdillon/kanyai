@@ -10,7 +10,7 @@
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from app.server import get_text
-from app.ml.generate_lyrics import CleanOutput
+from app.ml.clean_output import CleanOutput
 from app.config.log_setup import log_config
 from app.config.profanity import custom_badwords
 import logging
