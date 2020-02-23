@@ -10,6 +10,8 @@ from app.config.profanity import custom_badwords
 from app.ml.generate_lyrics import GenerateLyrics
 from app.ml.clean_output import CleanOutput
 import logging
+import typing
+import time
 
 
 def get_text(text_input: str) -> str:
@@ -70,3 +72,50 @@ def call_generator(start_phrase: str, weights_path: str, string_length: int) -> 
                                              temperature=0.87)
 
     return generated_text
+
+
+def stream_text(text_input: str) -> typing.Generator:
+    """Generate the lyrics for the text input from the model.
+    - Get 20 sentences of length greater than 20.
+    - Sleep for 0.5 seconds between sentences (thinking time)
+
+
+    :param text_input: starting lyric from the input form
+    :return: sanitised lyrics for rendering (str)
+    """
+
+    start_time = time.time()
+
+    generator = GenerateLyrics(embedding_dim=512)
+
+    logging.debug('loading character maps')
+    generator.load_character_maps(
+        character_map_load_path='./model/character_index_map.json',
+        index_map_load_path='./model/index_character_map.npy')
+
+    logging.debug('rebuilding model')
+    generator.rebuild_model(batch_size=1,
+                            weights_path='./model/ckpt_')
+    logging.debug('generating text')
+
+    generator.model.reset_states()
+    sentences = 1
+
+    while sentences <= 20:
+
+        logging.debug(f'Generating line {sentences} at {time.time() - start_time}')
+
+        generated_text = generator.generate_sentence(start_string=text_input,
+                                                     temperature=0.87)
+
+        gen_text = CleanOutput.sanitise_string(text_in=generated_text, custom_badwords=custom_badwords)
+
+        if len(gen_text) > 20:
+            logging.debug(f'capitalising_first_character')
+            gen_text = CleanOutput.capitalise_first_character(text_in=gen_text)
+
+            time.sleep(0.5)
+
+            sentences += 1
+
+            yield gen_text + '<br>'
