@@ -99,9 +99,9 @@ def stream_text(text_input: str) -> typing.Generator:
     logging.debug('generating text')
 
     generator.model.reset_states()
-    sentences = 1
+    sentences = 0
 
-    while sentences <= 20:
+    while sentences <= 16:
 
         logging.debug(f'Generating line {sentences} at {time.time() - start_time}')
 
@@ -112,10 +112,13 @@ def stream_text(text_input: str) -> typing.Generator:
 
         if len(gen_text) > 20:
             logging.debug(f'capitalising_first_character')
-            gen_text = CleanOutput.capitalise_first_character(text_in=gen_text)
+            gen_text = CleanOutput.clean_sentence(sentence_in=gen_text)
 
-            time.sleep(0.5)
+            if sentences > 0:
+                time.sleep(0.5)
 
             sentences += 1
 
-            yield gen_text + '<br>'
+            stop_char = '<br><br>' if sentences % 4 == 0 else '<br>'
+            logging.info(f'{gen_text} {stop_char} {sentences}')
+            yield gen_text + stop_char
