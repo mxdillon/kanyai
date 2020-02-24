@@ -119,8 +119,8 @@ class GenerateLyrics:
 
         return ''.join(generated_str)
 
-    def generate_sentence(self, start_string: str, temperature: float):
-        """Generate sentence starting with start_string of length num_characters using rebuilt model.
+    def generate_line(self, start_string: str, temperature: float):
+        """Generate line starting with start_string of length num_characters using rebuilt model.
 
         :param start_string: str user wishes to start generation with. Can be a single letter.
         :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
@@ -128,11 +128,10 @@ class GenerateLyrics:
         :return: string of generated text
         """
 
-        logging.debug('converting input')
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
-        generated_sentence = []
+        generated_line = []
         generated_str = ''
 
         while generated_str != '\n':
@@ -141,6 +140,6 @@ class GenerateLyrics:
             predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
             input_eval = tf.expand_dims([predicted_id], 0)
             generated_str = self.ind_to_char_map[predicted_id]
-            generated_sentence.append(generated_str)
+            generated_line.append(generated_str)
 
-        return ''.join(generated_sentence[:-1])
+        return ''.join(generated_line[:-1])

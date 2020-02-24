@@ -76,7 +76,8 @@ def stream():
         return Response(
             stream_template('index-stream.html', text_input=clean_input, result=(stream_with_context(result))))
 
-    return render_template('index-stream.html', text_input="", result="")
+    else:
+        return render_template('index-stream.html', text_input="", result="")
 
 
 def create_app():

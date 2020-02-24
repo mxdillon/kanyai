@@ -41,4 +41,4 @@ def test_sanitise_string(text_in, expected):
                                                   ('? hey so what', 'hey so what')])
 def test_clean_sentence(sentence_in, expected):
     """Check that custom profanities are being redacted."""
-    assert CleanOutput.clean_sentence(sentence_in=sentence_in) == expected
+    assert CleanOutput.clean_line(line_in=sentence_in) == expected

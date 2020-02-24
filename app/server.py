@@ -11,7 +11,6 @@ from app.ml.generate_lyrics import GenerateLyrics
 from app.ml.clean_output import CleanOutput
 import logging
 import typing
-import time
 
 
 def get_text(text_input: str) -> str:
@@ -75,15 +74,11 @@ def get_generator(weights_path: str) -> GenerateLyrics:
 
 def stream_text(text_input: str) -> typing.Generator:
     """Generate the lyrics for the text input from the model.
-    - Get 20 sentences of length greater than 20.
-    - Sleep for 0.5 seconds between sentences (thinking time)
-
+    - Get 16 lines as 4 paragraphs
 
     :param text_input: starting lyric from the input form
     :return: sanitised lyrics for rendering (str)
     """
-
-    start_time = time.time()
 
     generator = get_generator(weights_path='./model/ckpt_')
 
@@ -92,27 +87,23 @@ def stream_text(text_input: str) -> typing.Generator:
         character_map_load_path='./model/character_index_map.json',
         index_map_load_path='./model/index_character_map.npy')
 
-    sentences = 0
+    next_input = text_input
 
-    while sentences < 16:
+    for line in range(16):
 
-        logging.debug(f'Generating line {sentences} at {time.time() - start_time}')
+        gen_text = generator.generate_line(start_string=next_input, temperature=0.87)
 
-        generated_text = generator.generate_sentence(start_string=text_input,
-                                                     temperature=0.87)
+        if len(gen_text) < 3:
+            continue
 
-        gen_text = CleanOutput.sanitise_string(text_in=generated_text, custom_badwords=custom_badwords)
+        next_input = gen_text
 
-        if len(gen_text) > 20:
-            logging.debug(f'capitalising_first_character')
-            gen_text = CleanOutput.clean_sentence(sentence_in=gen_text)
+        gen_text = CleanOutput.sanitise_string(text_in=gen_text, custom_badwords=custom_badwords)
+        gen_text = CleanOutput.clean_line(line_in=gen_text)
+        gen_text = gen_text + '<br>'
 
-            if sentences > 0:
-                time.sleep(0.5)
-
-            sentences += 1
-
-            stop_char = '<br><br>' if sentences % 4 == 0 else '<br>'
-            # TODO: this should be debug level when we're happy with it
-            logging.info(f'{gen_text} {stop_char} {sentences}')
-            yield gen_text + stop_char
+        # Return a break before the first line
+        if line == 1:
+            yield '<br>' + gen_text
+        else:
+            yield gen_text
