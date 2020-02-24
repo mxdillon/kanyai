@@ -99,7 +99,7 @@ def stream_text(text_input: str) -> typing.Generator:
         next_input = gen_text
 
         gen_text = CleanOutput.sanitise_string(text_in=gen_text, custom_badwords=custom_badwords)
-        gen_text = CleanOutput.clean_line(line_in=gen_text)
+        gen_text = CleanOutput.clean_line(text_in=gen_text)
         gen_text = gen_text + '<br>'
 
         # Return a break before the first line
