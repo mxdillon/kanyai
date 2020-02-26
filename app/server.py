@@ -55,7 +55,7 @@ def get_generator(weights_path: str) -> GenerateLyrics:
     :return: string of generated lyrics appended to the start phrase
     """
 
-    logging.debug(f'leading GenerateLyrics')
+    logging.debug('loading GenerateLyrics')
     generator = GenerateLyrics(embedding_dim=512)
 
     logging.debug('loading character maps')
