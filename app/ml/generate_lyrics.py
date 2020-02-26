@@ -11,6 +11,10 @@ import json
 import numpy as np
 import tensorflow as tf
 import logging
+import time
+
+from app.ml.clean_output import CleanOutput
+from app.config.profanity import custom_badwords
 
 
 class GenerateLyrics:
@@ -96,13 +100,11 @@ class GenerateLyrics:
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
-        generated_str = []
-
-        logging.debug('resetting model')
-        self.model.reset_states()
+        self.generated_str = []
+        # lyric_time = time.time()
 
         logging.debug('looping through characters')
-        for _ in range(num_characters):
+        for i in range(num_characters):
             logging.debug('char loop - loading model - I think')
             predictions = self.model(input_eval)
 
@@ -115,9 +117,23 @@ class GenerateLyrics:
             logging.debug('char loop - looping through characters')
             input_eval = tf.expand_dims([predicted_id], 0)
 
-            generated_str.append(self.ind_to_char_map[predicted_id])
+            next_char = self.ind_to_char_map[predicted_id]
+            self.generated_str.append(next_char)
 
-        return ''.join(generated_str)
+            if next_char == '\n':
+                txt = ''.join(self.generated_str)
+                line = txt.split('\n')[-2] + '<br>'
+                # line = CleanOutput.clean_line(text_in=line)
+                # line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
+
+                # elapsed_time = time.time() - lyric_time
+                # print(i, line, elapsed_time)
+
+                # if elapsed_time < 1:
+                #     time.sleep(1 - elapsed_time)
+
+                # lyric_time = time.time()
+                yield line
 
     def generate_line(self, start_string: str, temperature: float):
         """Generate line starting with start_string of length num_characters using rebuilt model.

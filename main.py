@@ -9,7 +9,7 @@
 
 from flask import Flask, jsonify, render_template, request, Response, stream_with_context
 from flask_cors import CORS
-from app.server import get_text, stream_text
+from app.server import get_text
 from app.ml.clean_output import CleanOutput
 from app.config.log_setup import log_config
 from app.config.profanity import custom_badwords
@@ -46,8 +46,8 @@ def index():
         clean_text = get_text(text_input)
         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
 
-        return render_template('index.html', text_input=clean_input,
-                               result=clean_text)
+        return Response(
+            stream_template('index.html', text_input=clean_input, result=(stream_with_context(clean_text))))
 
     return render_template('index.html', text_input="", result="")
 
@@ -59,25 +59,25 @@ def stream_template(template_name, **context):
     rv = t.stream(context)
     return rv
 
-
-@app.route("/stream", methods=["GET", "POST"])
-def stream():
-    """Main streaming route for lyric entry"""
-
-    if request.method == 'POST':
-        # Get the input
-        text_input = request.form.get('text_input')
-        text_input = text_input if text_input else ' '
-        clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
-        logging.info(f'Streaming song for {clean_input}')
-
-        # Get the generator
-        result = stream_text(clean_input)
-        return Response(
-            stream_template('index-stream.html', text_input=clean_input, result=(stream_with_context(result))))
-
-    else:
-        return render_template('index-stream.html', text_input="", result="")
+#
+# @app.route("/stream", methods=["GET", "POST"])
+# def stream():
+#     """Main streaming route for lyric entry"""
+#
+#     if request.method == 'POST':
+#         # Get the input
+#         text_input = request.form.get('text_input')
+#         text_input = text_input if text_input else ' '
+#         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
+#         logging.info(f'Streaming song for {clean_input}')
+#
+#         # Get the generator
+#         result = stream_text(clean_input)
+#         return Response(
+#             stream_template('index-stream.html', text_input=clean_input, result=(stream_with_context(result))))
+#
+#     else:
+#         return render_template('index-stream.html', text_input="", result="")
 
 
 def create_app():

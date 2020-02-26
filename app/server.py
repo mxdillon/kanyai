@@ -13,7 +13,7 @@ import logging
 import typing
 
 
-def get_text(text_input: str) -> str:
+def get_text(text_input: str) -> typing.Generator:
     """Generate the lyrics for the text input from the model.
 
     :param text_input: starting lyric from the input form
@@ -34,18 +34,7 @@ def get_text(text_input: str) -> str:
                                                  num_characters=500,
                                                  temperature=0.87)
 
-        logging.debug(f'sanitising string')
-        gen_text = CleanOutput.sanitise_string(text_in=generated_text, custom_badwords=custom_badwords)
-
-        logging.debug(f'capitalising_first_character')
-        gen_text = CleanOutput.capitalise_first_character(text_in=gen_text)
-
-        logging.debug(f'replacing newlines with linebreaks')
-        gen_text = gen_text.replace('\n', '<br>')
-
-        logging.info(f'Generated the song {gen_text}')
-
-        return gen_text
+        return generated_text
 
 
 def get_generator(weights_path: str) -> GenerateLyrics:
@@ -67,43 +56,7 @@ def get_generator(weights_path: str) -> GenerateLyrics:
     generator.rebuild_model(batch_size=1,
                             weights_path=weights_path)
 
+    logging.debug('resetting model')
     generator.model.reset_states()
 
     return generator
-
-
-def stream_text(text_input: str) -> typing.Generator:
-    """Generate the lyrics for the text input from the model.
-    - Get 16 lines as 4 paragraphs
-
-    :param text_input: starting lyric from the input form
-    :return: sanitised lyrics for rendering (str)
-    """
-
-    generator = get_generator(weights_path='./model/ckpt_')
-
-    logging.debug('loading character maps')
-    generator.load_character_maps(
-        character_map_load_path='./model/character_index_map.json',
-        index_map_load_path='./model/index_character_map.npy')
-
-    next_input = text_input
-
-    for line in range(16):
-
-        gen_text = generator.generate_line(start_string=next_input, temperature=0.87)
-
-        if len(gen_text) < 3:
-            continue
-
-        next_input = gen_text
-
-        gen_text = CleanOutput.sanitise_string(text_in=gen_text, custom_badwords=custom_badwords)
-        gen_text = CleanOutput.clean_line(text_in=gen_text)
-        gen_text = gen_text + '<br>'
-
-        # Return a break before the first line
-        if line == 1:
-            yield '<br>' + gen_text
-        else:
-            yield gen_text
