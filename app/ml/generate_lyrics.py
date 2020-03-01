@@ -100,8 +100,11 @@ class GenerateLyrics:
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
+        logging.debug('resetting model')
+        self.model.reset_states()
+
         self.generated_str = []
-        # lyric_time = time.time()
+        lyric_time = time.time()
 
         logging.debug('looping through characters')
         for i in range(num_characters):
@@ -123,16 +126,17 @@ class GenerateLyrics:
             if next_char == '\n':
                 txt = ''.join(self.generated_str)
                 line = txt.split('\n')[-2] + '<br>'
-                # line = CleanOutput.clean_line(text_in=line)
-                # line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
+                line = CleanOutput.capitalise_first_character(text_in=line)
+                line = CleanOutput.clean_line(text_in=line)
+                line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
 
-                # elapsed_time = time.time() - lyric_time
-                # print(i, line, elapsed_time)
+                elapsed_time = time.time() - lyric_time
+                print(i, line, elapsed_time)
 
-                # if elapsed_time < 1:
-                #     time.sleep(1 - elapsed_time)
+                if elapsed_time < 1:
+                    time.sleep(1 - elapsed_time)
 
-                # lyric_time = time.time()
+                lyric_time = time.time()
                 yield line
 
     def generate_line(self, start_string: str, temperature: float):
