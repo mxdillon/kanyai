@@ -6,10 +6,9 @@
 :authors
     JP/CW at 02/01/20
 """
-from app.config.profanity import custom_badwords
 from app.ml.generate_lyrics import GenerateLyrics
 from app.ml.clean_output import CleanOutput
-import logging
+from flask import current_app as app
 import typing
 
 
@@ -22,14 +21,14 @@ def get_text(text_input: str) -> typing.Generator:
     if text_input is None:
         return ' '
     else:
-        logging.info(f'Generating lyrics for {text_input}')
+        app.logger.info(f'Generating lyrics for {text_input}')
 
-        logging.debug(f'ensuring space for {text_input}')
+        app.logger.debug(f'ensuring space for {text_input}')
         start_phrase = CleanOutput.ensure_space(text_input)
 
         generator = get_generator(weights_path='./model/ckpt_')
 
-        logging.debug('generating text')
+        app.logger.debug('generating text')
         generated_text = generator.generate_text(start_string=start_phrase,
                                                  num_characters=500,
                                                  temperature=0.87)
@@ -44,19 +43,19 @@ def get_generator(weights_path: str) -> GenerateLyrics:
     :return: string of generated lyrics appended to the start phrase
     """
 
-    logging.debug('loading GenerateLyrics')
+    app.logger.debug('loading GenerateLyrics')
     generator = GenerateLyrics(embedding_dim=512)
 
-    logging.debug('loading character maps')
+    app.logger.debug('loading character maps')
     generator.load_character_maps(
         character_map_load_path='./model/character_index_map.json',
         index_map_load_path='./model/index_character_map.npy')
 
-    logging.debug('rebuilding model')
+    app.logger.debug('rebuilding model')
     generator.rebuild_model(batch_size=1,
                             weights_path=weights_path)
 
-    logging.debug('resetting model')
+    app.logger.debug('resetting model')
     generator.model.reset_states()
 
     return generator

@@ -19,10 +19,16 @@ import logging
 app = Flask(__name__)
 CORS(app)
 
-# Configure logger
-log_config()
-logging.info('starting application')
 
+# Configure Gunicorn logger
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
+
+# Configure Flask logger
+log_config()
+app.logger.info('starting application')
 
 @app.route('/health', methods=['GET'])
 def health():
@@ -58,26 +64,6 @@ def stream_template(template_name, **context):
     t = app.jinja_env.get_template(template_name)
     rv = t.stream(context)
     return rv
-
-#
-# @app.route("/stream", methods=["GET", "POST"])
-# def stream():
-#     """Main streaming route for lyric entry"""
-#
-#     if request.method == 'POST':
-#         # Get the input
-#         text_input = request.form.get('text_input')
-#         text_input = text_input if text_input else ' '
-#         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
-#         logging.info(f'Streaming song for {clean_input}')
-#
-#         # Get the generator
-#         result = stream_text(clean_input)
-#         return Response(
-#             stream_template('index-stream.html', text_input=clean_input, result=(stream_with_context(result))))
-#
-#     else:
-#         return render_template('index-stream.html', text_input="", result="")
 
 
 def create_app():

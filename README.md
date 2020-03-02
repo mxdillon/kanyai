@@ -32,7 +32,7 @@ Pytest unit tests with 80% minimum coverage:
 ###Run locally
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=./secrets/kanyai-7efdbd925a1f.json
-gunicorn main:app
+gunicorn --log-level INFO main:app --reload
 ```
 
 ### Build/Run Docker Container

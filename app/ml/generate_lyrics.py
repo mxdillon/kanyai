@@ -10,9 +10,8 @@
 import json
 import numpy as np
 import tensorflow as tf
-import logging
+from flask import current_app as app
 import time
-
 from app.ml.clean_output import CleanOutput
 from app.config.profanity import custom_badwords
 
@@ -32,6 +31,7 @@ class GenerateLyrics:
         self.char_to_ind_map = None
         self.vocab_size = None
         self.model = None
+        self.generated_str = None
 
     def load_character_maps(self, character_map_load_path: str, index_map_load_path: str):
         """Load array and dictionary into memory.
@@ -96,28 +96,28 @@ class GenerateLyrics:
         :return: string of generated text
         """
 
-        logging.debug('converting input')
+        app.logger.debug('converting input')
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
-        logging.debug('resetting model')
+        app.logger.debug('resetting model')
         self.model.reset_states()
 
         self.generated_str = []
         lyric_time = time.time()
 
-        logging.debug('looping through characters')
+        app.logger.debug('looping through characters')
         for i in range(num_characters):
-            logging.debug('char loop - loading model - I think')
+            app.logger.debug('char loop - loading model - I think')
             predictions = self.model(input_eval)
 
-            logging.debug('char loop - squeezing')
+            app.logger.debug('char loop - squeezing')
             predictions = tf.squeeze(predictions, 0) / temperature
 
-            logging.debug('char loop - get an id')
+            app.logger.debug('char loop - get an id')
             predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
 
-            logging.debug('char loop - looping through characters')
+            app.logger.debug('char loop - looping through characters')
             input_eval = tf.expand_dims([predicted_id], 0)
 
             next_char = self.ind_to_char_map[predicted_id]
@@ -131,35 +131,10 @@ class GenerateLyrics:
                 line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
 
                 elapsed_time = time.time() - lyric_time
-                print(i, line, elapsed_time)
+                app.logger.info(f'char{i} is {line} at {elapsed_time}')
 
                 if elapsed_time < 1:
                     time.sleep(1 - elapsed_time)
 
                 lyric_time = time.time()
                 yield line
-
-    def generate_line(self, start_string: str, temperature: float):
-        """Generate line starting with start_string of length num_characters using rebuilt model.
-
-        :param start_string: str user wishes to start generation with. Can be a single letter.
-        :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
-        lower is more predictable, higher is more surprising
-        :return: string of generated text
-        """
-
-        input_eval = [self.char_to_ind_map[s] for s in start_string]
-        input_eval = tf.expand_dims(input_eval, 0)
-
-        generated_line = []
-        generated_str = ''
-
-        while generated_str != '\n':
-            predictions = self.model(input_eval)
-            predictions = tf.squeeze(predictions, 0) / temperature
-            predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
-            input_eval = tf.expand_dims([predicted_id], 0)
-            generated_str = self.ind_to_char_map[predicted_id]
-            generated_line.append(generated_str)
-
-        return ''.join(generated_line[:-1])

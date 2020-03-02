@@ -24,9 +24,3 @@ def test_post(client):
     """Check the post request for generating lyrics."""
     response = client.post('/')
     assert response.status_code == 200
-
-
-def test_stream(client):
-    """Check the index page loads."""
-    response = client.get('/stream')
-    assert response.status_code == 200
