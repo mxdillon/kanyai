@@ -19,7 +19,6 @@ import logging
 app = Flask(__name__)
 CORS(app)
 
-
 # Configure Gunicorn logger
 if __name__ != '__main__':
     gunicorn_logger = logging.getLogger('gunicorn.error')
@@ -29,6 +28,7 @@ if __name__ != '__main__':
 # Configure Flask logger
 log_config()
 app.logger.info('starting application')
+
 
 @app.route('/health', methods=['GET'])
 def health():
