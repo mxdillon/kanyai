@@ -10,7 +10,10 @@
 import json
 import numpy as np
 import tensorflow as tf
-import logging
+from flask import current_app as app
+import time
+from app.ml.clean_output import CleanOutput
+from app.config.profanity import custom_badwords
 
 
 class GenerateLyrics:
@@ -28,6 +31,7 @@ class GenerateLyrics:
         self.char_to_ind_map = None
         self.vocab_size = None
         self.model = None
+        self.generated_str = None
 
     def load_character_maps(self, character_map_load_path: str, index_map_load_path: str):
         """Load array and dictionary into memory.
@@ -92,29 +96,45 @@ class GenerateLyrics:
         :return: string of generated text
         """
 
-        logging.debug('converting input')
+        app.logger.debug('converting input')
         input_eval = [self.char_to_ind_map[s] for s in start_string]
         input_eval = tf.expand_dims(input_eval, 0)
 
-        generated_str = []
-
-        logging.debug('resetting model')
+        app.logger.debug('resetting model')
         self.model.reset_states()
 
-        logging.debug('looping through characters')
-        for _ in range(num_characters):
-            logging.debug('char loop - loading model - I think')
+        self.generated_str = []
+        lyric_time = time.time()
+
+        app.logger.debug('looping through characters')
+        for i in range(num_characters):
+            app.logger.debug('char loop - loading model - I think')
             predictions = self.model(input_eval)
 
-            logging.debug('char loop - squeezing')
+            app.logger.debug('char loop - squeezing')
             predictions = tf.squeeze(predictions, 0) / temperature
 
-            logging.debug('char loop - get an id')
+            app.logger.debug('char loop - get an id')
             predicted_id = tf.random.categorical(predictions, num_samples=1)[-1, 0].numpy()
 
-            logging.debug('char loop - looping through characters')
+            app.logger.debug('char loop - looping through characters')
             input_eval = tf.expand_dims([predicted_id], 0)
 
-            generated_str.append(self.ind_to_char_map[predicted_id])
+            next_char = self.ind_to_char_map[predicted_id]
+            self.generated_str.append(next_char)
 
-        return ''.join(generated_str)
+            if next_char == '\n':
+                txt = ''.join(self.generated_str)
+                line = txt.split('\n')[-2] + '<br>'
+                line = CleanOutput.capitalise_first_character(text_in=line)
+                line = CleanOutput.clean_line(text_in=line)
+                line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
+
+                elapsed_time = time.time() - lyric_time
+                app.logger.info(f'char{i} is {line} at {elapsed_time}')
+
+                if elapsed_time < 1:
+                    time.sleep(1 - elapsed_time)
+
+                lyric_time = time.time()
+                yield line

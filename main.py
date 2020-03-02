@@ -7,7 +7,7 @@
     JP/CW at 02/01/20
 """
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, Response, stream_with_context
 from flask_cors import CORS
 from app.server import get_text
 from app.ml.clean_output import CleanOutput
@@ -19,9 +19,15 @@ import logging
 app = Flask(__name__)
 CORS(app)
 
-# Configure logger
+# Configure Gunicorn logger
+if __name__ != '__main__':
+    gunicorn_logger = logging.getLogger('gunicorn.error')
+    app.logger.handlers = gunicorn_logger.handlers
+    app.logger.setLevel(gunicorn_logger.level)
+
+# Configure Flask logger
 log_config()
-logging.info('starting application')
+app.logger.info('starting application')
 
 
 @app.route('/health', methods=['GET'])
@@ -46,10 +52,18 @@ def index():
         clean_text = get_text(text_input)
         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
 
-        return render_template('index.html', text_input=clean_input,
-                               result=clean_text)
+        return Response(
+            stream_template('index.html', text_input=clean_input, result=(stream_with_context(clean_text))))
 
     return render_template('index.html', text_input="", result="")
+
+
+def stream_template(template_name, **context):
+    """Stream a Jinja template as per https://flask.palletsprojects.com/en/1.1.x/patterns/streaming/"""
+    app.update_template_context(context)
+    t = app.jinja_env.get_template(template_name)
+    rv = t.stream(context)
+    return rv
 
 
 def create_app():
