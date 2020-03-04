@@ -29,7 +29,7 @@ Pytest unit tests with 80% minimum coverage:
 ### Deployment (run during merge to master)
 `gcloud app deploy`
 
-###Run locally
+### Run locally
 ```
 export GOOGLE_APPLICATION_CREDENTIALS=./secrets/kanyai-7efdbd925a1f.json
 gunicorn --log-level INFO main:app --reload
