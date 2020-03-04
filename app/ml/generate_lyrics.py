@@ -133,8 +133,5 @@ class GenerateLyrics:
                 elapsed_time = time.time() - lyric_time
                 app.logger.info(f'{line} at {elapsed_time:.2f}')
 
-                if elapsed_time < 1:
-                    time.sleep(1 - elapsed_time)
-
                 lyric_time = time.time()
                 yield line
