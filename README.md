@@ -1,6 +1,6 @@
 # kanyAI
 
-[kanyAI](https://kanyai.com/) lyric generator created by [mxdillon](https://github.com/mxdillon) & [j-penson](https://github.com/j-penson)
+[kanyAI](https://www.kanyai.com/) lyric generator created by [mxdillon](https://github.com/mxdillon) & [j-penson](https://github.com/j-penson)
 
 ### Tests (run during pipeline)
 
