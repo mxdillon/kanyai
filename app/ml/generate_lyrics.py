@@ -17,7 +17,7 @@ from app.config.profanity import custom_badwords
 
 
 class GenerateLyrics:
-    """Generate lyrics with user defined start string with a saved model loaded from Google storage."""
+    """Generate lyrics with user defined start string with a saved model."""
 
     def __init__(self, embedding_dim: int):
         """
@@ -107,7 +107,7 @@ class GenerateLyrics:
         lyric_time = time.time()
 
         app.logger.debug('looping through characters')
-        for i in range(num_characters):
+        for _ in range(num_characters):
             app.logger.debug('char loop - loading model - I think')
             predictions = self.model(input_eval)
 
@@ -131,10 +131,7 @@ class GenerateLyrics:
                 line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
 
                 elapsed_time = time.time() - lyric_time
-                app.logger.info(f'char{i} is {line} at {elapsed_time}')
-
-                if elapsed_time < 1:
-                    time.sleep(1 - elapsed_time)
+                app.logger.info(f'{line} at {elapsed_time:.2f}')
 
                 lyric_time = time.time()
                 yield line

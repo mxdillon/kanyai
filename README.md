@@ -2,16 +2,6 @@
 
 [kanyAI](https://kanyai.com/) lyric generator created by [mxdillon](https://github.com/mxdillon) & [j-penson](https://github.com/j-penson)
 
-### Local testing
-
-Due to the Google Cloud logging, an environment variable 
-
-To get a key:
- - Go to https://console.cloud.google.com/iam-admin/serviceaccounts?project=kanyai
- - Download a key for  kanyai@appspot.gserviceaccount.com
- - Save it in ./secrets (don't upload it to Github!)
- - Set an env variable GOOGLE_APPLICATION_CREDENTIALS=./secrets/<keyfile>.json
-
 ### Tests (run during pipeline)
 
 flake8 style enforcement:
@@ -31,7 +21,6 @@ Pytest unit tests with 80% minimum coverage:
 
 ### Run locally
 ```
-export GOOGLE_APPLICATION_CREDENTIALS=./secrets/kanyai-7efdbd925a1f.json
 gunicorn --log-level INFO main:app --reload
 ```
 
@@ -41,6 +30,6 @@ gunicorn --log-level INFO main:app --reload
 docker build -t kanyai .
 
 # Run and expose port 8080
-docker run -it -p 8080:8080 -e GOOGLE_APPLICATION_CREDENTIALS=./secrets/kanyai-7efdbd925a1f.json kanyai:latest
+docker run -it -p 8080:80 kanyai:latest
 ```
 

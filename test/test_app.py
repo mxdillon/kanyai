@@ -8,7 +8,7 @@
 """
 
 
-def test_health(env_setup, client):
+def test_health(client):
     """Check the health of the service."""
     response = client.get('health')
     assert response.json == {"Status": 'OK'}
