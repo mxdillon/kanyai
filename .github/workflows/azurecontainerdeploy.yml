@@ -1,8 +1,8 @@
 name: Azure Container Instance Deployment
 on:
   push:
-#    branches:
-#      - 'master'
+    branches:
+      - 'master'
 
 jobs:
   build-and-deploy:
