@@ -131,7 +131,7 @@ class GenerateLyrics:
                 line = CleanOutput.sanitise_string(text_in=line, custom_badwords=custom_badwords)
 
                 elapsed_time = time.time() - lyric_time
-                app.logger.info(f'{line} at {elapsed_time:.2f}')
+                app.logger.debug(f'{line} at {elapsed_time:.2f}')
 
                 lyric_time = time.time()
                 yield line
