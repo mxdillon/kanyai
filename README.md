@@ -16,12 +16,9 @@ Pytest unit tests with 80% minimum coverage:
 
 `python3 -m pytest --cov=src --cov-fail-under=80`
 
-### Deployment (run during merge to master)
-`gcloud app deploy`
-
 ### Run locally
 ```
-gunicorn --log-level INFO main:app --reload
+gunicorn main:app --reload --workers=5 --bind=0.0.0.0:8080
 ```
 
 ### Build/Run Docker Container
