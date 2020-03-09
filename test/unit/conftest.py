@@ -9,6 +9,7 @@
 
 import pytest
 from app.ml.generate_lyrics import GenerateLyrics
+from app.server import get_generator
 
 
 @pytest.fixture
@@ -38,3 +39,10 @@ def rebuild_model(load_maps):
     load_maps.rebuild_model(batch_size=1,
                             weights_path='./test/mock-data/ckpt_')
     return load_maps
+
+
+@pytest.fixture(scope='session')
+def generator():
+    """Check we can get the lyric generator object, which loads the model"""
+    generator = get_generator(weights_path='./model/ckpt_')
+    return generator

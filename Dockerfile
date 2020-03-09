@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:latest-py3
+FROM tensorflow/tensorflow:2.0.1-py3
 
 ENV PORT 80
 EXPOSE 80

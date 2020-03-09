@@ -76,8 +76,6 @@ class GenerateLyrics:
             tf.keras.layers.Dense(units=self.vocab_size)
         ])
 
-        print(self.model.summary())
-
     def rebuild_model(self, batch_size, weights_path: str):
         """Rebuild model with best weights for text generation.
 
@@ -89,7 +87,6 @@ class GenerateLyrics:
         self.define_model(batch_size=batch_size)
         self.model.load_weights(weights_path)
         self.model.build(tf.TensorShape([batch_size, None]))
-        print(self.model.summary())
 
     def generate_text(self, start_string: str, num_characters: int, temperature: float):
         """Generate string starting with start_string of length num_characters using rebuilt model.

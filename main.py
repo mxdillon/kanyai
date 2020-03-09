@@ -9,7 +9,7 @@
 
 from flask import Flask, jsonify, render_template, request, Response, stream_with_context
 from flask_cors import CORS
-from app.server import get_text
+from app.server import get_text, get_generator
 from app.ml.clean_output import CleanOutput
 from app.config.log_setup import log_config
 from app.config.profanity import custom_badwords
@@ -28,6 +28,8 @@ if __name__ != '__main__':
 # Configure Flask logger
 log_config()
 app.logger.info('starting application')
+
+generator = get_generator(weights_path='./model/ckpt_')
 
 
 @app.route('/health', methods=['GET'])
@@ -49,7 +51,7 @@ def index():
         text_input = request.form.get('text_input')
         text_input = text_input if text_input else ' '
         # Generate lyrics and sanitise user input
-        clean_text = get_text(text_input)
+        clean_text = get_text(text_input, generator)
         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
 
         return Response(
