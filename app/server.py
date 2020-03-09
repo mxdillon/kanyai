@@ -12,10 +12,11 @@ from flask import current_app as app
 import typing
 
 
-def get_text(text_input: str) -> typing.Generator:
+def get_text(text_input: str, generator: GenerateLyrics) -> typing.Generator:
     """Generate the lyrics for the text input from the model.
 
     :param text_input: starting lyric from the input form
+    :param generator: model generator
     :return: sanitised lyrics for rendering (str)
     """
     if text_input is None:
@@ -25,8 +26,6 @@ def get_text(text_input: str) -> typing.Generator:
 
         app.logger.debug(f'ensuring space for {text_input}')
         start_phrase = CleanOutput.ensure_space(text_input)
-
-        generator = get_generator(weights_path='./model/ckpt_')
 
         app.logger.debug('generating text')
         generated_text = generator.generate_text(start_string=start_phrase,
@@ -43,19 +42,15 @@ def get_generator(weights_path: str) -> GenerateLyrics:
     :return: string of generated lyrics appended to the start phrase
     """
 
-    app.logger.debug('loading GenerateLyrics')
     generator = GenerateLyrics(embedding_dim=512)
 
-    app.logger.debug('loading character maps')
     generator.load_character_maps(
         character_map_load_path='./model/character_index_map.json',
         index_map_load_path='./model/index_character_map.npy')
 
-    app.logger.debug('rebuilding model')
     generator.rebuild_model(batch_size=1,
                             weights_path=weights_path)
 
-    app.logger.debug('resetting model')
     generator.model.reset_states()
 
     return generator
