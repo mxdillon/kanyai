@@ -15,11 +15,6 @@ import time
 from app.ml.clean_output import CleanOutput
 from app.config.profanity import custom_badwords
 
-# Tensorflow CPU in Docker perf suggestion from:
-# https://www.freecodecamp.org/news/how-a-badly-configured-tensorflow-in-docker-can-be-10x-slower-than-expected-3ac89f33d625/
-tf.config.threading.inter_op_parallelism_threads = 1
-tf.config.threading.intra_op_parallelism_threads = 1
-
 
 class GenerateLyrics:
     """Generate lyrics with user defined start string with a saved model."""

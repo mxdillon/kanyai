@@ -50,7 +50,7 @@ def index():
         # Get the input from the form, set it to an single space if empty
         text_input = request.form.get('text_input')
         text_input = text_input if text_input else ' '
-        # Generate lyrics and sanitise user input
+
         clean_text = get_text(text_input, generator)
         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
 
