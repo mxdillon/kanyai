@@ -29,7 +29,7 @@ if __name__ != '__main__':
 log_config()
 app.logger.info('starting application')
 
-generator = get_generator(weights_path='./model/ckpt_')
+generator = get_generator(model_folder='gpt2-simple', checkpoint_directory='model')
 
 
 @app.route('/health', methods=['GET'])

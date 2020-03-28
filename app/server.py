@@ -29,28 +29,18 @@ def get_text(text_input: str, generator: GenerateLyrics) -> typing.Generator:
 
         app.logger.debug('generating text')
         generated_text = generator.generate_text(start_string=start_phrase,
-                                                 num_characters=500,
-                                                 temperature=0.87)
+                                                 num_words=200,
+                                                 temperature=0.8)
 
         return generated_text
 
 
-def get_generator(weights_path: str) -> GenerateLyrics:
+def get_generator(model_folder: str, checkpoint_directory: str) -> GenerateLyrics:
     """Instantiate the generator class with a saved model and generate a lyrics string.
 
-    :param weights_path: path to the model file containing the weights
-    :return: string of generated lyrics appended to the start phrase
+    :param model_folder: name of the folder containing the model weights
+    :param checkpoint_directory: path to the file containing the model folder
+    :return: GenerateLyrics class with the model already loaded
     """
 
-    generator = GenerateLyrics(embedding_dim=512)
-
-    generator.load_character_maps(
-        character_map_load_path='./model/character_index_map.json',
-        index_map_load_path='./model/index_character_map.npy')
-
-    generator.rebuild_model(batch_size=1,
-                            weights_path=weights_path)
-
-    generator.model.reset_states()
-
-    return generator
+    return GenerateLyrics(model_folder=model_folder, checkpoint_directory=checkpoint_directory)

@@ -7,9 +7,6 @@
     MD at 20/12/19
 """
 
-import json
-import numpy as np
-import tensorflow as tf
 import gpt_2_simple as gpt2
 from datetime import datetime
 from flask import current_app as app
@@ -18,71 +15,18 @@ from app.config.profanity import custom_badwords
 
 
 class GenerateLyrics:
-    """Generate lyrics with user defined start string with a saved model."""
+    """Generate lyrics with user defined start string with a saved gtp2-simple model."""
 
-    def __init__(self, embedding_dim: int):
+    def __init__(self, model_folder: str, checkpoint_directory: str):
         """
-        :param embedding_dim: size of vector representation for each character. This MUST match the embedding dimension
-        of the saved model that is loaded during generation
+        :param model_folder: name of the folder containing the model weights
+        :param checkpoint_directory: path to the file containing the model folder
         """
+        self.model_folder = model_folder
+        self.checkpoint_directory = checkpoint_directory
 
-        self.embedding_dim = embedding_dim
-
-        self.ind_to_char_map = None
-        self.char_to_ind_map = None
-        self.vocab_size = None
-        self.model = None
-        self.generated_str = None
-
-    def load_character_maps(self, character_map_load_path: str, index_map_load_path: str):
-        """Load array and dictionary into memory.
-
-        :param character_map_load_path: str containing path of character to index map stored as .json
-        :param index_map_load_path: str containing path of index to character map stored as .npy
-        :return: None
-        """
-        self.ind_to_char_map = np.load(index_map_load_path, allow_pickle=True)
-
-        with open(character_map_load_path, 'r') as dictionary:
-            self.char_to_ind_map = json.load(dictionary)
-
-        self.vocab_size = self.ind_to_char_map.shape[0]
-
-    def define_model(self, batch_size):
-        """Define tensorflow model. Prints model summary to terminal
-
-        :param batch_size: 2^n - indicates the size of batches model will be trained in. Included as parameter here
-        as we want to have a batch size of 1 when generating, ie not the same as when training
-        :return: None
-        """
-        self.model = tf.keras.Sequential([
-            tf.keras.layers.Embedding(input_dim=self.vocab_size,
-                                      output_dim=self.embedding_dim,
-                                      batch_input_shape=[batch_size, None]),
-            tf.keras.layers.GRU(units=512,
-                                activation='sigmoid',
-                                return_sequences=True,
-                                stateful=True,
-                                recurrent_initializer='glorot_uniform'),
-            tf.keras.layers.GRU(units=256,
-                                activation='sigmoid',
-                                return_sequences=True,
-                                stateful=True,
-                                recurrent_initializer='glorot_uniform'),
-            tf.keras.layers.Dense(units=self.vocab_size)
-        ])
-
-    def rebuild_model(self, batch_size, weights_path: str):
-        """Rebuild model with best weights for text generation.
-
-        :param batch_size: size of batch of examples to be generated. Has only been tested on =1
-        :param weights_path: str of path to weights file to use
-        :return: None
-        """
-
-        self.define_model(batch_size=batch_size)
-        self.model.load_weights(weights_path)
-        self.model.build(tf.TensorShape([batch_size, None]))
+        self.sess = gpt2.start_tf_sess()
+        gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
 
     def generate_text(self, start_string: str, num_words: int, temperature: float):
         """Generate string starting with start_string of length num_characters using rebuilt model.
@@ -94,13 +38,11 @@ class GenerateLyrics:
         :return: string of generated text
         """
 
-        sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(sess, run_name='run1', checkpoint_dir='gpt')
-
         gen_start_time = datetime.now()
 
-        txt = gpt2.generate(sess, run_name='run1', checkpoint_dir='gpt', length=num_words, temperature=temperature,
-                            prefix=start_string, return_as_list=True)[0]
+        txt = \
+            gpt2.generate(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory,
+                          length=num_words, temperature=temperature, prefix=start_string, return_as_list=True)[0]
 
         time_to_generate = datetime.now() - gen_start_time
         app.logger.debug(f'Time taken to generate lyrics {time_to_generate}')
