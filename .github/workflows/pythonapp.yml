@@ -6,22 +6,24 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    
+
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Python 3.7
-      uses: actions/setup-python@v1
-      with:
-        python-version: 3.7
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install flake8 bandit pytest pytest-cov
-        pip install -r requirements.txt
-        pip install tensorflow==1.14
-    - name: flake8 style enforcement
-      run: flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160 app/ main.py test/
-    - name: bandit security linting
-      run: bandit main.py
-    - name: unit tests
-      run: python3 -m pytest --cov=app --cov-fail-under=80
+      - uses: actions/checkout@v1
+      - name: Set up Python 3.7
+        uses: actions/setup-python@v1
+        with:
+          python-version: 3.7
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install flake8 bandit pytest pytest-cov
+          pip install -r requirements.txt
+          pip install tensorflow==1.14
+      - name: check model file size
+        run: ls -lh model/gpt2-simple
+      - name: flake8 style enforcement
+        run: flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160 app/ main.py test/
+      - name: bandit security linting
+        run: bandit main.py
+      - name: unit tests
+        run: python3 -m pytest --cov=app --cov-fail-under=80
