@@ -2,13 +2,25 @@
 # coding=utf-8
 """ Flask server
 :usage:
-    Routes for KanyAI server - health check and index.
+    Routes for kanyAI server - health check and index.
 :authors
     JP/CW at 02/01/20
 """
+
 from app.ml.generate_lyrics import GenerateLyrics
 from app.ml.clean_output import CleanOutput
 from flask import current_app as app
+
+
+def get_generator(model_folder: str, checkpoint_directory: str) -> GenerateLyrics:
+    """Instantiate the generator class with a saved model and generate a lyrics string.
+
+    :param model_folder: name of the folder containing the model weights
+    :param checkpoint_directory: path to the file containing the model folder
+    :return: GenerateLyrics class with the model already loaded
+    """
+
+    return GenerateLyrics(model_folder=model_folder, checkpoint_directory=checkpoint_directory)
 
 
 def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
@@ -32,14 +44,3 @@ def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
                                                  temperature=0.8)
 
         return generated_text
-
-
-def get_generator(model_folder: str, checkpoint_directory: str) -> GenerateLyrics:
-    """Instantiate the generator class with a saved model and generate a lyrics string.
-
-    :param model_folder: name of the folder containing the model weights
-    :param checkpoint_directory: path to the file containing the model folder
-    :return: GenerateLyrics class with the model already loaded
-    """
-
-    return GenerateLyrics(model_folder=model_folder, checkpoint_directory=checkpoint_directory)

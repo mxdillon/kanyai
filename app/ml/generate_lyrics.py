@@ -26,21 +26,21 @@ class GenerateLyrics:
         self.model_folder = model_folder
         self.checkpoint_directory = checkpoint_directory
 
-        tf.reset_default_graph()
-        # TODO check that resetting the graph during init works with multiple requests, otherwise we'll need to move
-        # this into generate_text() so that it happens with each POST req (slower)
-        self.sess = gpt2.start_tf_sess()
-        gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
+        self.sess = None
 
     def generate_text(self, start_string: str, num_words: int, temperature: float) -> str:
         """Generate string starting with start_string of length num_characters using rebuilt model.
 
+        Resetting of the graph must be done with every POST request otherwise the model won't run.
         :param start_string: str user wishes to start generation with. Can be a single letter.
         :param num_words: number of words you wish to be generated. Note time to generate increases
         :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
         lower is more predictable, higher is more surprising
         :return: string of generated text
         """
+        tf.reset_default_graph()
+        self.sess = gpt2.start_tf_sess()
+        gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
 
         gen_start_time = datetime.now()
 
@@ -51,7 +51,6 @@ class GenerateLyrics:
         time_to_generate = datetime.now() - gen_start_time
         app.logger.info(f'Time taken to generate lyrics {time_to_generate}')
 
-        # txt = txt.split('\n')[-2] + '<br>'
         txt = CleanOutput.capitalise_first_character(text_in=txt)
         txt = CleanOutput.clean_line(text_in=txt)
         txt = CleanOutput.sanitise_string(text_in=txt, custom_badwords=custom_badwords)
