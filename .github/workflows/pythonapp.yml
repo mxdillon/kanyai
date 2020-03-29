@@ -18,6 +18,8 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 bandit pytest pytest-cov
         pip install -r requirements.txt
+    - name: Check for the model
+      run: find model
     - name: flake8 style enforcement
       run: flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160 app/ main.py test/
     - name: bandit security linting
