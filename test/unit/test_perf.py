@@ -18,4 +18,4 @@ def test_post(client):
     print(f'elapsed time for request is {elapsed}')
     assert response.status_code == 200, "Response not ok"
     # Setting a 20 second limit for responses - this is a finger in the air guess
-    assert elapsed < 20, "Request too slow"
+    assert elapsed < 35, "Request too slow"

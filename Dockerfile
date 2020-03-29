@@ -1,4 +1,4 @@
-FROM tensorflow/tensorflow:1.15.0-py3
+FROM python:onbuild
 
 ENV PORT 8080
 EXPOSE 8080

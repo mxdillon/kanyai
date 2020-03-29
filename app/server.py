@@ -9,10 +9,9 @@
 from app.ml.generate_lyrics import GenerateLyrics
 from app.ml.clean_output import CleanOutput
 from flask import current_app as app
-import typing
 
 
-def get_text(text_input: str, generator: GenerateLyrics) -> typing.Generator:
+def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
     """Generate the lyrics for the text input from the model.
 
     :param text_input: starting lyric from the input form
@@ -29,7 +28,7 @@ def get_text(text_input: str, generator: GenerateLyrics) -> typing.Generator:
 
         app.logger.debug('generating text')
         generated_text = generator.generate_text(start_string=start_phrase,
-                                                 num_words=200,
+                                                 num_words=num_words,
                                                  temperature=0.8)
 
         return generated_text

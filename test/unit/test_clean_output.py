@@ -35,10 +35,10 @@ def test_sanitise_string(text_in, expected):
     assert CleanOutput.sanitise_string(text_in=text_in, custom_badwords=custom_badwords) == expected
 
 
-@pytest.mark.parametrize("sentence_in,expected", [(' something she said', 'something she said'),
+@pytest.mark.parametrize("text_in,expected", [(' something she said', 'something she said'),
                                                   ('something he said', 'something he said'),
                                                   (', hi there ', 'hi there '),
                                                   ('? hey so what', 'hey so what')])
-def test_clean_sentence(sentence_in, expected):
+def test_clean_sentence(text_in, expected):
     """Check that custom profanities are being redacted."""
-    assert CleanOutput.clean_line(text_in=sentence_in) == expected
+    assert CleanOutput.clean_line(text_in=text_in) == expected

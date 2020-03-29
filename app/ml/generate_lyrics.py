@@ -8,6 +8,7 @@
 """
 
 import gpt_2_simple as gpt2
+import tensorflow as tf
 from datetime import datetime
 from flask import current_app as app
 from app.ml.clean_output import CleanOutput
@@ -25,10 +26,13 @@ class GenerateLyrics:
         self.model_folder = model_folder
         self.checkpoint_directory = checkpoint_directory
 
+        tf.reset_default_graph()
+        # TODO check that resetting the graph during init works with multiple requests, otherwise we'll need to move
+        # this into generate_text() so that it happens with each POST req (slower)
         self.sess = gpt2.start_tf_sess()
         gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
 
-    def generate_text(self, start_string: str, num_words: int, temperature: float):
+    def generate_text(self, start_string: str, num_words: int, temperature: float) -> str:
         """Generate string starting with start_string of length num_characters using rebuilt model.
 
         :param start_string: str user wishes to start generation with. Can be a single letter.
@@ -45,9 +49,9 @@ class GenerateLyrics:
                           length=num_words, temperature=temperature, prefix=start_string, return_as_list=True)[0]
 
         time_to_generate = datetime.now() - gen_start_time
-        app.logger.debug(f'Time taken to generate lyrics {time_to_generate}')
+        app.logger.info(f'Time taken to generate lyrics {time_to_generate}')
 
-        txt = txt.split('\n')[-2] + '<br>'
+        # txt = txt.split('\n')[-2] + '<br>'
         txt = CleanOutput.capitalise_first_character(text_in=txt)
         txt = CleanOutput.clean_line(text_in=txt)
         txt = CleanOutput.sanitise_string(text_in=txt, custom_badwords=custom_badwords)

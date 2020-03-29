@@ -12,7 +12,7 @@ from app.ml.generate_lyrics import GenerateLyrics
 from app.server import get_generator
 
 
-@pytest.fixture
+@pytest.fixture(scope='session')
 def client():
     """Flask test client with Google Cloud logging client removed."""
     from main import create_app
@@ -23,26 +23,10 @@ def client():
 
 @pytest.fixture(scope='session')
 def generator_class():
-    return GenerateLyrics(embedding_dim=512)
-
-
-@pytest.fixture(scope='session')
-def load_maps(generator_class):
-    generator_class.load_character_maps(
-        character_map_load_path='./test/mock-data/character_index_map.json',
-        index_map_load_path='./test/mock-data/index_character_map.npy')
-    return generator_class
-
-
-@pytest.fixture(scope='session')
-def rebuild_model(load_maps):
-    load_maps.rebuild_model(batch_size=1,
-                            weights_path='./test/mock-data/ckpt_')
-    return load_maps
+    return GenerateLyrics(model_folder='gpt2-simple', checkpoint_directory='model')
 
 
 @pytest.fixture(scope='session')
 def generator():
     """Check we can get the lyric generator object, which loads the model"""
-    generator = get_generator(weights_path='./model/ckpt_')
-    return generator
+    return get_generator(model_folder='gpt2-simple', checkpoint_directory='model')
