@@ -9,8 +9,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
-      - name: Git LFS pull
-        run: git lfs fetch
+        with:
+          lfs: true
       - name: Set up Python 3.7
         uses: actions/setup-python@v1
         with:
