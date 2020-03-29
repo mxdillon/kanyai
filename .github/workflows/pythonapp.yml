@@ -18,7 +18,6 @@ jobs:
         python -m pip install --upgrade pip
         pip install flake8 bandit pytest pytest-cov
         pip install -r requirements.txt
-        pip install tensorflow==2.1.0
     - name: flake8 style enforcement
       run: flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160 app/ main.py test/
     - name: bandit security linting
