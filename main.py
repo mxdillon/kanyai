@@ -4,7 +4,7 @@
 :usage:
     Flask application.
 :authors
-    JP/CW at 02/01/20
+    JP/MD at 02/01/20
 """
 
 from flask import Flask, jsonify, render_template, request, Response, stream_with_context
