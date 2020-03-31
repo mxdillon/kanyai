@@ -28,5 +28,5 @@ def test_index(client):
 
 def test_post(client):
     """Check the post request for generating lyrics."""
-    response = client.post('/')
+    response = client.post('/', data={'text_input': 'test'})
     assert response.status_code == 200

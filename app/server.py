@@ -27,6 +27,7 @@ def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
     """Generate the lyrics for the text input from the model.
 
     :param text_input: starting lyric from the input form
+    :param num_words: # words to generate
     :param generator: model generator
     :return: sanitised lyrics for rendering (str)
     """
