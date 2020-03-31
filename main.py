@@ -52,7 +52,9 @@ def index():
         text_input = text_input if text_input else ' '
 
         clean_text = get_text(text_input=text_input, num_words=200, generator=generator)
+
         clean_input = CleanOutput.sanitise_string(text_in=text_input, custom_badwords=custom_badwords)
+        clean_input = CleanOutput.capitalise_first_character(text_in=clean_input)
 
         return render_template('index.html', text_input=clean_input, result=clean_text)
 
