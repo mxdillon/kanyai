@@ -6,6 +6,12 @@
 :authors
     JP at 02/01/20
 """
+import os
+
+
+def test_model_exists():
+    """Check the model file is the expected location"""
+    assert os.path.isfile("./model/gpt2-simple/model-200.data-00000-of-00001"), "Model file doesn't exist"
 
 
 def test_health(client):
@@ -22,5 +28,5 @@ def test_index(client):
 
 def test_post(client):
     """Check the post request for generating lyrics."""
-    response = client.post('/')
+    response = client.post('/', data={'text_input': 'test'})
     assert response.status_code == 200

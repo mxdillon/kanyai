@@ -14,15 +14,14 @@
             </form>
 
             {% if result != "" %}
-            <div class="text" style="color:#7A7A7A;">
-                {{ text_input }} <br>
-                {% autoescape false %}
-                {% for lyric in result: %}
-                {{ lyric }}
-                {% endfor %}
-                {% endautoescape %}
-            </div>
+                <div class="text" style="color:#7A7A7A;">
+                    <u>{{ text_input }}</u> <br> <br>
+                    {% autoescape false %}
+                    {{ result }}
+                    {% endautoescape %}
+                </div>
             {% endif %}
+
         </div>
     </div>
 </div>
