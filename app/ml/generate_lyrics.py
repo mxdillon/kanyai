@@ -38,7 +38,7 @@ class GenerateLyrics:
         lower is more predictable, higher is more surprising
         :return: string of generated text
         """
-        tf.reset_default_graph()
+        tf.compat.v1.reset_default_graph()
         self.sess = gpt2.start_tf_sess()
         gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
 
