@@ -38,9 +38,14 @@ class GenerateLyrics:
         lower is more predictable, higher is more surprising
         :return: string of generated text
         """
+        load_start_time = datetime.now()
+
         tf.compat.v1.reset_default_graph()
         self.sess = gpt2.start_tf_sess()
         gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
+
+        time_to_load = datetime.now() - load_start_time
+        app.logger.info(f'Time taken to load model {time_to_load}')
 
         gen_start_time = datetime.now()
 
