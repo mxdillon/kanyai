@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
-""" Test performance of application
+"""Test performance of application.
+
 :usage:
     To be run with every commit
 :authors
