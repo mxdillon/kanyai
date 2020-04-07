@@ -1,10 +1,11 @@
 #!/usr/bin/python
 # coding=utf-8
-""" Flask server
+"""Application functions.
+
 :usage:
     Routes for kanyAI server - health check and index.
 :authors
-    JP/CW at 02/01/20
+    JP/MD at 02/01/20
 """
 
 from app.ml.generate_lyrics import GenerateLyrics
@@ -19,7 +20,6 @@ def get_generator(model_folder: str, checkpoint_directory: str) -> GenerateLyric
     :param checkpoint_directory: path to the file containing the model folder
     :return: GenerateLyrics class with the model already loaded
     """
-
     return GenerateLyrics(model_folder=model_folder, checkpoint_directory=checkpoint_directory)
 
 

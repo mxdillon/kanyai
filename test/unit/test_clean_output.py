@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
-"""Test generate_lyrics classes and methods
+"""Test generate_lyrics classes and methods.
+
 :usage:
     To be run with every commit
 :authors
@@ -17,12 +18,14 @@ from app.ml.clean_output import CleanOutput
                                               (' what Up', 'What Up'),
                                               (' What Up', 'What Up')])
 def test_capitalise_first_character(text_in, expected):
+    """Test capitalising the first character for a nice output."""
     assert CleanOutput.capitalise_first_character(text_in=text_in) == expected
 
 
 @pytest.mark.parametrize("text_in,expected", [('hello World', 'hello World '),
                                               (' What Up ', ' What Up ')])
 def test_ensure_space(text_in, expected):
+    """Test space trimming also for a nice output."""
     assert CleanOutput.ensure_space(text_in=text_in) == expected
 
 

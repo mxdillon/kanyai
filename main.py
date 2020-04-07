@@ -1,8 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
-""" KanyAI application
-:usage:
-    Flask application.
+"""KanyAI application.
+
 :authors
     JP/MD at 02/01/20
 """
@@ -45,7 +44,6 @@ def index():
     POST requests are from submissions.
     GET are the initial rendering of the page (no text input or result).
     """
-
     if request.method == 'POST':
         # Get the input from the form, set it to an single space if empty
         text_input = request.form.get('text_input')

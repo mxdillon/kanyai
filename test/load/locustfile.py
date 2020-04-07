@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
-"""Load test KanyAI using the Locust library
+"""Load test KanyAI using the Locust library.
+
 :usage:
     To be run with every commit
 :authors
@@ -12,7 +13,7 @@ import string
 
 
 def index(locust):
-    """Get the index page for KanyAI"""
+    """Get the index page for KanyAI."""
     locust.client.get("/")
 
 
@@ -24,13 +25,17 @@ def get_song(locust):
 
 
 class GetSong(TaskSet):
-    """Locust Task set to log on to site and get a song"""
+    """Locust Task set to log on to site and get a song."""
+
     tasks = {get_song: 1}
 
     def on_start(self):
+        """Start task."""
         index(self)
 
 
 class WebsiteUser(HttpLocust):
+    """Main locust class."""
+
     task_set = GetSong
     wait_time = between(5.0, 9.0)
