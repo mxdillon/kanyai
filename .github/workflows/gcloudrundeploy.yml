@@ -38,4 +38,4 @@ jobs:
                                         --platform managed \
                                         --memory 2Gi \
                                         --timeout=300 \
-                                        --concurrency=2
+                                        --concurrency=1
