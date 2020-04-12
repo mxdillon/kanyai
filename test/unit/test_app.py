@@ -1,7 +1,6 @@
 #!/usr/bin/python
 # coding=utf-8
-"""Tests for KanyAI application.
-
+""" Tests for KanyAI application
 :usage:
     Run with every commit.
 :authors
