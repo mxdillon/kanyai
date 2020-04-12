@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
-""" Log setup for application.
+"""Log setup for application.
+
 :usage:
     Setup logs during app creation.
 :authors

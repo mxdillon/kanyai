@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # coding=utf-8
-"""Machine Learning Model
+"""Machine Learning Model.
+
 :usage:
     Class to generate lyrics based on a user-defined start phrase and a pretrained model.
 :authors
@@ -19,7 +20,8 @@ class GenerateLyrics:
     """Generate lyrics with user defined start string with a saved gtp2-simple model."""
 
     def __init__(self, model_folder: str, checkpoint_directory: str):
-        """
+        """Initialise with a model folder and checkpoint.
+
         :param model_folder: name of the folder containing the model weights
         :param checkpoint_directory: path to the file containing the model folder
         """
