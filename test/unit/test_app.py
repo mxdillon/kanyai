@@ -11,7 +11,7 @@ import os
 
 def test_model_exists():
     """Check the model file is the expected location"""
-    assert os.path.isfile("./model/gpt2-simple/model-200.data-00000-of-00001"), "Model file doesn't exist"
+    assert os.path.isfile("./model/gpt2-simple/model-690.data-00000-of-00001"), "Model file doesn't exist"
 
 
 def test_health(client):
