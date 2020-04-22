@@ -63,4 +63,6 @@ class GenerateLyrics:
         txt = CleanOutput.sanitise_string(text_in=txt, custom_badwords=custom_badwords)
         txt = txt.replace('\n', '<br>')
 
+        self.sess.close()
+
         return txt
