@@ -19,6 +19,7 @@ jobs:
           python-version: 3.7
       - name: Check current working directory
         run: pwd
+        working-directory: kanyai-function
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
