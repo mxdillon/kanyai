@@ -9,8 +9,8 @@
 """
 
 import pytest
-from app.config.profanity import custom_badwords
-from app.ml.clean_output import CleanOutput
+from app.profanity import custom_badwords
+from app.clean_output import CleanOutput
 
 
 @pytest.mark.parametrize("text_in,expected", [('hello World', 'Hello World'),

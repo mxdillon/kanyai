@@ -1,0 +1,33 @@
+name: Google Cloud Run Deployment
+on:
+  push:
+    branches:
+      - 'master'
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          lfs: true
+
+      # Setup gcloud CLI
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '270.0.0'
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+
+      # Deploy the GCP Function
+      - name: Deploy
+        run: |
+          gcloud functions deploy kanyai \
+                --entry-point=get_lyrics \
+                --region=europe-west2 \
+                --memory=2048 \
+                --timeout=180 \
+                --source=kanyai \
+                --trigger-http \
+                --runtime=python37

@@ -16,17 +16,22 @@ Pytest unit tests with 80% minimum coverage:
 
 `python3 -m pytest --cov=src --cov-fail-under=80`
 
+
+### Model
+
+
+
 ### Run locally
 ```
-gunicorn main:app --reload --workers=5 --bind=0.0.0.0:8080
+
+pip install functions-framework
+
+cd ./kanyai-function
+
+export GOOGLE_APPLICATION_CREDENTUALS=../secrets/...
+
+functions-framework --target get_lyrics --port 8081
+
+curl http://localhost:8081 --form 'text_input=test
+
 ```
-
-### Build/Run Docker Container
-```bash
-# Build the container
-docker build -t kanyai .
-
-# Run and expose port 8080
-docker run -it -p 8080:80 kanyai:latest
-```
-
