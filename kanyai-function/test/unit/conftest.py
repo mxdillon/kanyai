@@ -13,10 +13,10 @@ from app import generate_lyrics
 from app import server
 
 
-@pytest.fixture(scope='session')
-def generator():
-    """Get the Generator class for the GPT NLG model."""
-    return generate_lyrics.GenerateLyrics(model_folder='gpt2-simple', checkpoint_directory='/tmp/model')
+@pytest.fixture(autouse=True)
+def env_setup(monkeypatch):
+    monkeypatch.setenv('GOOGLE_APPLICATION_CREDENTIALS',
+                       './test/mock-secrets/sample-creds.json')
 
 
 @pytest.fixture
@@ -27,3 +27,9 @@ def mock_get_input(monkeypatch):
         return "test song"
 
     monkeypatch.setattr(server, 'get_input', mock_get_input)
+
+
+@pytest.fixture(scope='session')
+def generator():
+    """Get the Generator class for the GPT NLG model."""
+    return generate_lyrics.GenerateLyrics(model_folder='gpt2-simple', checkpoint_directory='/tmp/model')
