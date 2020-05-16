@@ -17,20 +17,20 @@ jobs:
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
-      - name: Check current working directory
-        run: pwd
-        working-directory: kanyai-function
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flake8 flake8-docstrings pep8-naming flake8-variables-names flake8-bugbear
           pip install pytest pytest-cov
           pip install bandit
-          pip install -r requirements.txt
+          pip install -r kanyai-function/requirements.txt
       - name: flake8 style enforcement
+        working-directory: kanyai-function
         run: flake8 --max-line-length=160 --docstring-convention=numpy .
       - name: bandit security linting
+        working-directory: kanyai-function
         run: bandit main.py
       - name: unit tests
+        working-directory: kanyai-function
         run: python -m pytest --cov=app main.py --cov-fail-under=80
 
