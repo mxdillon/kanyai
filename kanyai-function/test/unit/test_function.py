@@ -12,11 +12,6 @@ from app import server
 from main import get_lyrics
 
 
-def test_model_exists():
-    """Check the model file is the expected location."""
-    assert os.path.isfile("/tmp/model/gpt2-simple/model-690.data-00000-of-00001"), "Model file doesn't exist"
-
-
 def test_get_input(mock_get_input):
     """A test to check the monkeypatching works properly."""
     song_input = server.get_input()
