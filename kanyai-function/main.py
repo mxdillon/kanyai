@@ -25,6 +25,7 @@ def get_lyrics(request):
         model_file = 'model.zip'
         tmp_file = f'/tmp/{model_file}'
 
+        server.get_model(model_file, tmp_file)
         server.unzip_model(tmp_file)
 
     # New gpt_2_simple instance each time,= due to tf 1.x sessions

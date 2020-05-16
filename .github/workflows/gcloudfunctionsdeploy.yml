@@ -1,8 +1,5 @@
 name: Google Cloud Run Deployment
-on:
-  push:
-    branches:
-      - 'master'
+on: [push]
 
 jobs:
   setup-build-publish-deploy:
@@ -28,6 +25,7 @@ jobs:
                 --region=europe-west2 \
                 --memory=2048 \
                 --timeout=180 \
-                --source=kanyai \
+                --source=kanyai-function \
                 --trigger-http \
-                --runtime=python37
+                --runtime=python37 \
+                --allow-unauthenticated

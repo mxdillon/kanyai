@@ -10,6 +10,8 @@
 
 from app.generate_lyrics import GenerateLyrics
 from app.clean_output import CleanOutput
+from google.cloud import storage
+
 import logging
 import zipfile
 
@@ -58,3 +60,14 @@ def unzip_model(tmp_file):
 
     with zipfile.ZipFile('model.zip', 'r') as zip_ref:
         zip_ref.extractall(model_dir)
+
+
+def get_model(model_file, tmp_file):
+    """Download the model from GCS."""
+    storage_client = storage.Client()
+
+    logging.info(f'downloading {model_file} to {tmp_file}')
+
+    storage_client.bucket('model-for-functions') \
+        .blob(model_file) \
+        .download_to_filename(tmp_file)

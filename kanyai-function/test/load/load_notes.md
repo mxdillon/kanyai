@@ -12,9 +12,9 @@ pip install locust
 
 ```
 # Run locust and start the WebUI
-locust -f ./test/load/locustfile.py --host http://localhost:8080
+locust -f ./test/load/locustfile.py --host https://europe-west2-kanyai.cloudfunctions.net/kanyai
 
 # Run locust for 10 users, don't start the webUI and show a summary
-locust -f ./test/load/locustfile.py --host http://localhost:8080 --clients 10 --no-web --only-summary --run-time 3m
+locust -f ./test/load/locustfile.py --host https://europe-west2-kanyai.cloudfunctions.net/kanyai --clients 10 --no-web --only-summary --run-time 3m
 
 ```
