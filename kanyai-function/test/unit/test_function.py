@@ -7,7 +7,6 @@
 :authors
     JP at 02/01/20
 """
-import os
 from app import server
 from main import get_lyrics
 
