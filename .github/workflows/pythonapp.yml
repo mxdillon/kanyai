@@ -28,5 +28,7 @@ jobs:
         run: flake8 --max-line-length=160 --docstring-convention=numpy .
       - name: unit tests
         working-directory: kanyai-function
-        run: python -m pytest -c ./test/pytest.ini
+        env:
+          GOOGLE_APPLICATION_CREDENTIALS=./test/mock-data/sample-creds.json
+        run: python -m pytest
 
