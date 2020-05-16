@@ -21,12 +21,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install flake8 flake8-docstrings pep8-naming flake8-variables-names flake8-bugbear
-          pip install pytest pytest-cov
+          pip install pytest
           pip install -r kanyai-function/requirements.txt
       - name: flake8 style enforcement
         working-directory: kanyai-function
         run: flake8 --max-line-length=160 --docstring-convention=numpy .
       - name: unit tests
         working-directory: kanyai-function
-        run: python -m pytest --cov=app main.py --cov-fail-under=80
+        run: python -m pytest -c ./test/pytest.ini
 

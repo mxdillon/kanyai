@@ -13,13 +13,6 @@ from app import generate_lyrics
 from app import server
 
 
-@pytest.fixture(autouse=True)
-def env_setup(monkeypatch):
-    """Set mock credentials."""
-    monkeypatch.setenv('GOOGLE_APPLICATION_CREDENTIALS',
-                       './test/mock-secrets/sample-creds.json')
-
-
 @pytest.fixture
 def mock_get_input(monkeypatch):
     """Requests.get() mocked to return {'mock_key':'mock_response'}."""
