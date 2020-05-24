@@ -22,6 +22,7 @@ jobs:
       - name: Deploy
         run: |
           gcloud functions deploy kanyai \
+                --project kanyai \
                 --entry-point=get_lyrics \
                 --region=europe-west2 \
                 --memory=2048 \
