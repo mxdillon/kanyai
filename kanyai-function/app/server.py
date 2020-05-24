@@ -13,6 +13,7 @@ from app.clean_output import CleanOutput
 from google.cloud import storage
 
 import logging
+import os
 import zipfile
 
 
@@ -58,8 +59,11 @@ def unzip_model(tmp_file):
 
     model_dir = '/tmp'
 
-    with zipfile.ZipFile('model.zip', 'r') as zip_ref:
+    with zipfile.ZipFile(tmp_file, 'r') as zip_ref:
         zip_ref.extractall(model_dir)
+
+    logging.info(f'removing {tmp_file} to save on memory')
+    os.remove(tmp_file)
 
 
 def get_model(model_file, tmp_file):

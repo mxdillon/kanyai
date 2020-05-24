@@ -21,11 +21,15 @@ setup_logging(handler)
 
 def get_lyrics(request):
     """Call the KanyAI model and return the generated song."""
-    if not os.path.exists('/tmp/model/gpt2-simple/model-690.data-00000-of-00001'):
-        model_file = 'model.zip'
-        tmp_file = f'/tmp/{model_file}'
 
-        server.get_model(model_file, tmp_file)
+    model_file = 'model.zip'
+    tmp_file = f'/tmp/{model_file}'
+
+    if not os.path.exists('/tmp/model/gpt2-simple/model-690.data-00000-of-00001'):
+
+        if not os.path.exists('/tmp/model.zip'):
+            server.get_model(model_file, tmp_file)
+
         server.unzip_model(tmp_file)
 
     # New gpt_2_simple instance each time,= due to tf 1.x sessions

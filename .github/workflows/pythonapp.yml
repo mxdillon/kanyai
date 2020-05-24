@@ -29,6 +29,6 @@ jobs:
       - name: unit tests
         working-directory: kanyai-function
         env:
-          GOOGLE_APPLICATION_CREDENTIALS: ./test/mock-data/sample-creds.json
+          GOOGLE_APPLICATION_CREDENTIALS: ${{ secrets.GCLOUD_AUTH }}
         run: python -m pytest
 
