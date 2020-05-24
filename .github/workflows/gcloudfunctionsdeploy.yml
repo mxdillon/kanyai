@@ -16,6 +16,7 @@ jobs:
         with:
           version: '270.0.0'
           service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          export_default_credentials: true
 
       # Deploy the GCP Function
       - name: Deploy
