@@ -21,7 +21,6 @@ setup_logging(handler)
 
 def get_lyrics(request):
     """Call the KanyAI model and return the generated song."""
-
     model_file = 'model.zip'
     tmp_file = f'/tmp/{model_file}'
 

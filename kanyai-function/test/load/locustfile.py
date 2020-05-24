@@ -15,7 +15,7 @@ import string
 def get_song(locust):
     """Generate a song by sending a random string of length 2-100 to the index page."""
     text_input = ''.join(random.choice(string.ascii_letters) for _ in range(random.randint(2, 100)))
-    data = {'text_input': text_input}
+    data = {'input': text_input}
     locust.client.post("/", data)
 
 
