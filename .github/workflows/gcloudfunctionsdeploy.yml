@@ -1,5 +1,9 @@
-name: Google Cloud Run Deployment
-on: [push]
+name: Google Cloud Functions Deployment
+on:
+  push:
+    branches:
+      - 'master'
+
 
 jobs:
   setup-build-publish-deploy:
