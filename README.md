@@ -8,25 +8,44 @@ flake8 style enforcement:
 
 `flake8 --ignore=E203,C901,E402,E501,D400 --max-line-length=160 src/ test/ app.py`
 
-Bandit security linting:
-
-`bandit app.py`
-
 Pytest unit tests with 80% minimum coverage:
 
 `python3 -m pytest --cov=src --cov-fail-under=80`
 
-### Run locally
+
+### Model
+
+
+
+### Local Dev Instructions
+
+Test using pytest 
 ```
-gunicorn main:app --reload --workers=5 --bind=0.0.0.0:8080
+cd ./kanyai-function
+export GOOGLE_APPLICATION_CREDENTUALS=../secrets/x.json
+
+pytest
+
+
 ```
 
-### Build/Run Docker Container
-```bash
-# Build the container
-docker build -t kanyai .
 
-# Run and expose port 8080
-docker run -it -p 8080:80 kanyai:latest
+
+Run the function using [Functions Framework for Python](https://github.com/GoogleCloudPlatform/functions-framework-python)
 ```
 
+# Activate the venv, set the env variable for GCP (replace x.json with secret name)
+source ./env/bin/activate
+cd ./kanyai-function
+export GOOGLE_APPLICATION_CREDENTUALS=../secrets/x.json
+
+# Install the framework
+pip install functions-framework
+
+# Run the framework
+functions-framework --target get_lyrics --port 8081
+
+# An example request
+curl -X POST  http://localhost:8081 --form 'input=song about kim'
+
+```

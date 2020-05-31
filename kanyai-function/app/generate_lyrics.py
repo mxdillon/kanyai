@@ -11,9 +11,9 @@
 import gpt_2_simple as gpt2
 import tensorflow as tf
 from datetime import datetime
-from flask import current_app as app
-from app.ml.clean_output import CleanOutput
-from app.config.profanity import custom_badwords
+from app.clean_output import CleanOutput
+from app.profanity import custom_badwords
+import logging
 
 
 class GenerateLyrics:
@@ -47,7 +47,7 @@ class GenerateLyrics:
         gpt2.load_gpt2(self.sess, run_name=self.model_folder, checkpoint_dir=self.checkpoint_directory)
 
         time_to_load = datetime.now() - load_start_time
-        app.logger.info(f'Time taken to load model {time_to_load}')
+        logging.info(f'Time taken to load model {time_to_load}')
 
         gen_start_time = datetime.now()
 
@@ -56,7 +56,7 @@ class GenerateLyrics:
                           length=num_words, temperature=temperature, prefix=start_string, return_as_list=True)[0]
 
         time_to_generate = datetime.now() - gen_start_time
-        app.logger.info(f'Time taken to generate lyrics {time_to_generate}')
+        logging.info(f'Time taken to generate lyrics {time_to_generate}')
 
         txt = CleanOutput.capitalise_first_character(text_in=txt)
         txt = CleanOutput.clean_line(text_in=txt)

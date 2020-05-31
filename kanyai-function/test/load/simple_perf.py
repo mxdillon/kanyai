@@ -28,7 +28,7 @@ print("started psrecord")
 
 for text_input in ['holla at the DJ', 'Kim what are you saying', 'jesus runs this']:
     print(f"sending {text_input} to application")
-    requests.post(url="http://localhost:5000", data={'text_input': text_input})
+    requests.post(url="https://europe-west2-kanyai.cloudfunctions.net/kanyai", data={'text_input': text_input})
 
 run_app.terminate()
 

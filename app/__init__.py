@@ -1,1 +1,0 @@
-"""Kanyai application code."""

@@ -12,15 +12,10 @@ import random
 import string
 
 
-def index(locust):
-    """Get the index page for KanyAI."""
-    locust.client.get("/")
-
-
 def get_song(locust):
     """Generate a song by sending a random string of length 2-100 to the index page."""
     text_input = ''.join(random.choice(string.ascii_letters) for _ in range(random.randint(2, 100)))
-    data = {'text_input': text_input}
+    data = {'input': text_input}
     locust.client.post("/", data)
 
 
@@ -28,10 +23,6 @@ class GetSong(TaskSet):
     """Locust Task set to log on to site and get a song."""
 
     tasks = {get_song: 1}
-
-    def on_start(self):
-        """Start task."""
-        index(self)
 
 
 class WebsiteUser(HttpLocust):

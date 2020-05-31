@@ -6,26 +6,46 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      working-directory: kanyai-function
 
     steps:
+
       - uses: actions/checkout@v1
         with:
           lfs: true
+
+      - uses: GoogleCloudPlatform/github-actions/setup-gcloud@master
+        with:
+          version: '270.0.0'
+          service_account_key: ${{ secrets.GCLOUD_AUTH }}
+          export_default_credentials: true
+
       - name: Set up Python 3.7
         uses: actions/setup-python@v1
         with:
           python-version: 3.7
+
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install flake8 flake8-docstrings pep8-naming flake8-variables-names flake8-bugbear
-          pip install pytest pytest-cov
-          pip install bandit
-          pip install -r requirements.txt
-          pip install tensorflow==1.15.0
+          pip install pytest
+          pip install -r kanyai-function/requirements.txt
+
       - name: flake8 style enforcement
-        run: flake8 --max-line-length=160 --docstring-convention=numpy app/ main.py test/
-      - name: bandit security linting
-        run: bandit main.py
+        working-directory: kanyai-function
+        run: flake8 --max-line-length=160 --docstring-convention=numpy .
+
+      - name: download model
+        working-directory: kanyai-function
+        run: gsutil cp ${{ secrets.MODEL_BUCKET }}/model.zip /tmp
+
+      - name: unzip model
+        working-directory: kanyai-function
+        run: unzip /tmp/model.zip -d /tmp
+
       - name: unit tests
-        run: python -m pytest --cov=app --cov-fail-under=80
+        working-directory: kanyai-function
+        run: python -m pytest
+
