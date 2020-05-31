@@ -37,6 +37,14 @@ jobs:
         working-directory: kanyai-function
         run: flake8 --max-line-length=160 --docstring-convention=numpy .
 
+      - name: download model
+        working-directory: kanyai-function
+        run: gsutil cp ${{ secrets.MODEL_BUCKET }}/model.zip /tmp
+
+      - name: unzip model
+        working-directory: kanyai-function
+        run: unzip /tmp/model.zip -d /tmp
+
       - name: unit tests
         working-directory: kanyai-function
         run: python -m pytest
