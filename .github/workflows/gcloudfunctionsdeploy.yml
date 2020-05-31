@@ -26,8 +26,9 @@ jobs:
                 --entry-point=get_lyrics \
                 --region=europe-west2 \
                 --memory=2048 \
-                --timeout=180 \
+                --timeout=60 \
                 --source=kanyai-function \
                 --trigger-http \
                 --runtime=python37 \
-                --allow-unauthenticated
+                --allow-unauthenticated \
+                --max-instances=5

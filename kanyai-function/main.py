@@ -7,7 +7,6 @@
 """
 from app import server
 from app.generate_lyrics import GenerateLyrics
-import os
 import logging
 import google.cloud.logging
 from google.cloud.logging.handlers import CloudLoggingHandler, setup_logging
@@ -24,9 +23,9 @@ def get_lyrics(request):
     model_file = 'model.zip'
     tmp_file = f'/tmp/{model_file}'
 
-    if not os.path.exists('/tmp/model/gpt2-simple/model-690.data-00000-of-00001'):
+    if server.check_file_exists('/tmp/model/gpt2-simple/model-690.data-00000-of-00001'):
 
-        if not os.path.exists('/tmp/model.zip'):
+        if not server.check_file_exists(tmp_file):
             server.get_model(model_file, tmp_file)
 
         server.unzip_model(tmp_file)

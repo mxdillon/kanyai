@@ -75,3 +75,8 @@ def get_model(model_file, tmp_file):
     storage_client.bucket('model-for-functions') \
         .blob(model_file) \
         .download_to_filename(tmp_file)
+
+
+def check_file_exists(filename):
+    """Check a file exists and is non-zero size."""
+    return os.path.exists(filename) and os.path.getsize(filename) > 0
