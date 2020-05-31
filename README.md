@@ -17,17 +17,35 @@ Pytest unit tests with 80% minimum coverage:
 
 
 
-### Run locally
+### Local Dev Instructions
+
+Test using pytest 
+```
+cd ./kanyai-function
+export GOOGLE_APPLICATION_CREDENTUALS=../secrets/x.json
+
+pytest
+
+
 ```
 
+
+
+Run the function using [Functions Framework for Python](https://github.com/GoogleCloudPlatform/functions-framework-python)
+```
+
+# Activate the venv, set the env variable for GCP (replace x.json with secret name)
+source ./env/bin/activate
+cd ./kanyai-function
+export GOOGLE_APPLICATION_CREDENTUALS=../secrets/x.json
+
+# Install the framework
 pip install functions-framework
 
-cd ./kanyai-function
-
-export GOOGLE_APPLICATION_CREDENTUALS=../secrets/...
-
+# Run the framework
 functions-framework --target get_lyrics --port 8081
 
-curl http://localhost:8081 --form 'text_input=test
+# An example request
+curl -X POST  http://localhost:8081 --form 'input=song about kim'
 
 ```
