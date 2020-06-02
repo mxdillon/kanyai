@@ -37,7 +37,7 @@ Run the function using [Functions Framework for Python](https://github.com/Googl
 # Activate the venv, set the env variable for GCP (replace x.json with secret name)
 source ./env/bin/activate
 cd ./kanyai-function
-export GOOGLE_APPLICATION_CREDENTUALS=../secrets/x.json
+export GOOGLE_APPLICATION_CREDENTIALS=../secrets/x.json
 
 # Install the framework
 pip install functions-framework
