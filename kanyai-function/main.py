@@ -23,7 +23,7 @@ def get_lyrics(request):
     model_file = 'model.zip'
     tmp_file = f'/tmp/{model_file}'
 
-    if server.check_file_exists('/tmp/model/gpt2-simple/model-690.data-00000-of-00001'):
+    if not server.check_file_exists('/tmp/model/gpt2-simple/model-690.data-00000-of-00001'):
 
         if not server.check_file_exists(tmp_file):
             server.get_model(model_file, tmp_file)
