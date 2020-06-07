@@ -41,7 +41,7 @@ def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
         logging.debug('generating text')
         generated_text = generator.generate_text(start_string=start_phrase,
                                                  num_words=num_words,
-                                                 temperature=0.8)
+                                                 temperature=1.00)
 
         return generated_text
 
