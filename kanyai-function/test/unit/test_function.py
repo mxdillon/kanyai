@@ -19,5 +19,5 @@ def test_get_input(mock_get_input):
 
 def test_get_lyrics(mock_get_input):
     """Check the get_lyrics main function generates a song."""
-    clean_text = get_lyrics(None)
+    clean_text, _, _ = get_lyrics(None)
     assert len(clean_text) > 100
