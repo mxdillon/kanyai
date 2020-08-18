@@ -20,7 +20,6 @@ setup_logging(handler)
 
 def get_lyrics(request):
     """Call the KanyAI model and return the generated song."""
-
     # Set CORS headers for the main request
     headers = {
         'Access-Control-Allow-Origin': '*',
