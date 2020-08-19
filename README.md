@@ -1,6 +1,7 @@
 # kanyAI
 
 ![CI-build](https://github.com/mxdillon/kanyai/workflows/CI-build/badge.svg)
+
 ![CD-build](https://github.com/mxdillon/kanyai/workflows/CD-build/badge.svg)
 
 kanyai is the back-end for [kanyUI](https://github.com/mxdillon/kanyai)
