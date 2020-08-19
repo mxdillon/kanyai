@@ -22,6 +22,7 @@ def get_lyrics(request):
     """Call the KanyAI model and return the generated song."""
     # Set CORS headers for the main request
     headers = {
+        #TODO - restrict this to production UI URL / IP range when live
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'POST',
     }
