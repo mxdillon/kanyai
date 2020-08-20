@@ -1,6 +1,13 @@
 # kanyAI
 
-[kanyAI](https://www.kanyai.com/) lyric generator created by [mxdillon](https://github.com/mxdillon) & [j-penson](https://github.com/j-penson)
+![CI-build](https://github.com/mxdillon/kanyai/workflows/CI-build/badge.svg)
+![CD-build](https://github.com/mxdillon/kanyai/workflows/CD-build/badge.svg)
+
+kanyai is the back-end for [kanyUI](https://github.com/mxdillon/kanyai)
+
+Project is live at https://www.kanyai.com/. \
+Created by [mxdillon](https://github.com/mxdillon) & [j-penson
+](https://github.com/j-penson).
 
 ### Tests (run during pipeline)
 

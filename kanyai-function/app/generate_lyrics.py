@@ -61,7 +61,6 @@ class GenerateLyrics:
         txt = CleanOutput.capitalise_first_character(text_in=txt)
         txt = CleanOutput.clean_line(text_in=txt)
         txt = CleanOutput.sanitise_string(text_in=txt, custom_badwords=custom_badwords)
-        txt = txt.replace('\n', '<br>')
 
         self.sess.close()
 

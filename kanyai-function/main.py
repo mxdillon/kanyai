@@ -20,6 +20,13 @@ setup_logging(handler)
 
 def get_lyrics(request):
     """Call the KanyAI model and return the generated song."""
+    # Set CORS headers for the main request
+    headers = {
+        # TODO - restrict this to production UI URL / IP range when live
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'POST',
+    }
+
     model_file = 'model.zip'
     tmp_file = f'/tmp/{model_file}'
 
@@ -37,4 +44,4 @@ def get_lyrics(request):
 
     clean_text = server.get_text(text_input=text_input, num_words=70, generator=generator)
 
-    return clean_text
+    return (clean_text, 200, headers)

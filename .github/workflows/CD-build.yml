@@ -1,4 +1,4 @@
-name: Google Cloud Functions Deployment
+name: CD-build
 on:
   push:
     branches:
