@@ -32,8 +32,6 @@ cd ./kanyai-function
 export GOOGLE_APPLICATION_CREDENTUALS=../secrets/x.json
 
 pytest
-
-
 ```
 
 
