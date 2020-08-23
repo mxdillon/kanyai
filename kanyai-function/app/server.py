@@ -36,7 +36,7 @@ def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
         logging.info(f'Generating lyrics for {text_input}')
 
         logging.debug(f'ensuring space for {text_input}')
-        start_phrase = CleanOutput.ensure_space(text_input)
+        start_phrase = CleanOutput.ensure_newline(text_input)
 
         logging.debug('generating text')
         generated_text = generator.generate_text(start_string=start_phrase,

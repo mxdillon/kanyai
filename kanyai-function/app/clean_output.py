@@ -40,16 +40,16 @@ class CleanOutput:
         return text_rtn[0].upper() + text_rtn[1:]
 
     @staticmethod
-    def ensure_space(text_in: str) -> str:
-        """Ensure there is a space at the end of the user input so that lyric generation starts by generating a new word.
+    def ensure_newline(text_in: str) -> str:
+        """Ensure there is a blank line between the title and the start of the generated text.
 
         :param text_in: text input from user
-        :return: text input from user, ensuring there is a space at the end
+        :return: text input from user, ensuring there is a blank line
         """
         if text_in[-1] == ' ':
-            return text_in
+            return text_in + '\n \n'
         else:
-            return text_in + ' '
+            return text_in + ' \n \n'
 
     @staticmethod
     def clean_line(text_in: str) -> str:

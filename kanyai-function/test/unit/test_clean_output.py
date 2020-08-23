@@ -22,11 +22,11 @@ def test_capitalise_first_character(text_in, expected):
     assert CleanOutput.capitalise_first_character(text_in=text_in) == expected
 
 
-@pytest.mark.parametrize("text_in,expected", [('hello World', 'hello World '),
-                                              (' What Up ', ' What Up ')])
-def test_ensure_space(text_in, expected):
+@pytest.mark.parametrize("text_in,expected", [('hello World', 'hello World \n \n'),
+                                              (' What Up ', ' What Up \n \n')])
+def test_ensure_newline(text_in, expected):
     """Test space trimming also for a nice output."""
-    assert CleanOutput.ensure_space(text_in=text_in) == expected
+    assert CleanOutput.ensure_newline(text_in=text_in) == expected
 
 
 @pytest.mark.parametrize("text_in,expected", [('fuck shit', '**** ****'),
