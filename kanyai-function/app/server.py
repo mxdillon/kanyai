@@ -17,7 +17,7 @@ import os
 import zipfile
 
 
-def get_input(request):
+def get_input(request) -> str:
     """Get the input song from the request form."""
     return request.form.get('input')
 
@@ -46,7 +46,7 @@ def get_text(text_input: str, num_words: int, generator: GenerateLyrics) -> str:
         return generated_text
 
 
-def unzip_model(tmp_file):
+def unzip_model(tmp_file) -> None:
     """Unzip the model to /tmp.
 
     This is not ideal but:
@@ -66,7 +66,7 @@ def unzip_model(tmp_file):
     os.remove(tmp_file)
 
 
-def get_model(model_file, tmp_file):
+def get_model(model_file, tmp_file) -> None:
     """Download the model from GCS."""
     storage_client = storage.Client()
 
@@ -77,6 +77,6 @@ def get_model(model_file, tmp_file):
         .download_to_filename(tmp_file)
 
 
-def check_file_exists(filename):
+def check_file_exists(filename) -> bool:
     """Check a file exists and is non-zero size."""
     return os.path.exists(filename) and os.path.getsize(filename) > 0
