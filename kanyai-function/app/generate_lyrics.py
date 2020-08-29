@@ -35,9 +35,9 @@ class GenerateLyrics:
 
         Resetting of the graph must be done with every POST request otherwise the model won't run.
         :param start_string: str user wishes to start generation with. Can be a single letter.
-        :param num_words: number of words you wish to be generated. Note time to generate increases
+        :param num_words: number of words you wish to be generated. Note time to generate increases.
         :param temperature: parameter that determines how 'surprising' the predictions are. value of 1 is neutral,
-        lower is more predictable, higher is more surprising
+        lower is more predictable, higher is more surprising.
         :return: string of generated text
         """
         load_start_time = datetime.now()
@@ -58,6 +58,7 @@ class GenerateLyrics:
         time_to_generate = datetime.now() - gen_start_time
         logging.info(f'Time taken to generate lyrics {time_to_generate}')
 
+        txt = CleanOutput.remove_lastline(text_in=txt)
         txt = CleanOutput.capitalise_first_character(text_in=txt)
         txt = CleanOutput.clean_line(text_in=txt)
         txt = CleanOutput.sanitise_string(text_in=txt, custom_badwords=custom_badwords)

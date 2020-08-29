@@ -45,3 +45,12 @@ def test_sanitise_string(text_in, expected):
 def test_clean_sentence(text_in, expected):
     """Check that custom profanities are being redacted."""
     assert CleanOutput.clean_line(text_in=text_in) == expected
+
+
+@pytest.mark.parametrize("text_in,expected", [('hi\nthis \nis\n', 'hi\nthis \nis'),
+                                              ('test\n2\nshould work', 'test\n2'),
+                                              ('no newlines', 'no newlines'),
+                                              ('single \n newline', 'single ')])
+def test_remove_lastline(text_in, expected):
+    """Check that custom profanities are being redacted."""
+    assert CleanOutput.remove_lastline(text_in=text_in) == expected

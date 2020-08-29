@@ -42,6 +42,6 @@ def get_lyrics(request):
 
     text_input = server.get_input(request)
 
-    clean_text = server.get_text(text_input=text_input, num_words=70, generator=generator)
+    clean_text = server.get_text(text_input=text_input, num_words=80, generator=generator)
 
     return (clean_text, 200, headers)
