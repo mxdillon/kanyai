@@ -11,7 +11,7 @@ Created by [mxdillon](https://github.com/mxdillon) & [j-penson
 
 KanyAI is an implementation of GPT-2 trained on Yeezy's lyrics and interviews.
 
-The model is served using Google Cloud Functions via [KanyUI])https://github.com/j-penson/kanyui), the React based front end.
+The model is served using Google Cloud Functions via [KanyUI](https://github.com/j-penson/kanyui), the React based front end.
 
 If you look carefully in code, you might spot a hacky hack to get around the GCP function 2Gb memory limit ✌️
 
