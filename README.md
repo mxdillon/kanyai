@@ -9,7 +9,7 @@ Project is live at https://www.kanyai.com/. \
 Created by [mxdillon](https://github.com/mxdillon) & [j-penson
 ](https://github.com/j-penson).
 
-KanyAI is an implementation of GPT-2 trained on Yeezy's lyrics and interviews.
+KanyAI is an implementation of GPT-2 trained on Yeezus' lyrics and interviews.
 
 The model is served using Google Cloud Functions via [KanyUI](https://github.com/j-penson/kanyui), the React based front end.
 
