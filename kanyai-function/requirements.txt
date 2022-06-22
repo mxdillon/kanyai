@@ -3,5 +3,5 @@ Flask==1.1.2
 gpt-2-simple==0.7.1
 google-cloud-logging==1.15.0
 google-cloud-storage==1.28.0
-numpy==1.16.4
+numpy==1.22.0
 tensorflow-cpu==1.15.0
